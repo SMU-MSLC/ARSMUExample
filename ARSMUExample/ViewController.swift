@@ -18,6 +18,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     //MARK: Class Properties
     
     let imageSize = 720
+    var lastNode:SCNNode? = nil
     
     // Special thanks to SMU students T. Pop, J. Ledford, and L. Wood for these styles!
     var models = [wave_style().model,mosaic_style().model,udnie_style().model] as [MLModel]
@@ -63,14 +64,16 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         print(idx)
         let startImage = sceneView.snapshot()
         let newImage = stylizeImage(cgImage: startImage.cgImage!, model: models[idx])
-        //doInference(inputImage: sceneView.snapshot())
-        imagePlane.firstMaterial?.diffuse.contents = newImage //sceneView.snapshot()
+
+        imagePlane.firstMaterial?.diffuse.contents = newImage
         imagePlane.firstMaterial?.lightingModel = .constant
         
         // add the node to the scene
         let planeNode = SCNNode(geometry:imagePlane)
         sceneView.scene.rootNode.addChildNode(planeNode)
         
+        // save this last node
+        lastNode = planeNode
         
         // update the node to be a bit in front of the camera inside the AR session
         
@@ -83,6 +86,30 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
     }
     
+    @IBAction func didSwipe(_ sender: UISwipeGestureRecognizer) {
+        
+        
+        if let node = lastNode {
+            var moveAction:SCNAction
+            
+            switch sender.direction {
+            case .left:
+                moveAction = SCNAction.moveBy(x: -0.1, y: 0.0, z: 0, duration: 0.25)
+            case .right:
+                moveAction = SCNAction.moveBy(x: 0.1, y: 0.0, z: 0, duration: 0.25)
+            case .up:
+                moveAction = SCNAction.moveBy(x: 0.0, y: 0.1, z: 0, duration: 0.25)
+            case .down:
+                moveAction = SCNAction.moveBy(x: 0.0, y: -0.1, z: 0, duration: 0.25)
+            default:
+                moveAction = SCNAction.moveBy(x: 0.0, y: 0.0, z: 0, duration: 0.25)
+            }
+            
+
+            node.runAction(moveAction)
+        }
+        
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
