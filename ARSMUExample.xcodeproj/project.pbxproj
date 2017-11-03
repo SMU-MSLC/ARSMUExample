@@ -7,14 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B6427A811FAC08DB00AF453B /* wave_style.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = B6427A801FAC08DB00AF453B /* wave_style.mlmodel */; };
+		B6427A831FACA2AC00AF453B /* mosaic_style.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = B6427A821FACA2AC00AF453B /* mosaic_style.mlmodel */; };
+		B6427A851FACA2B500AF453B /* udnie_style.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = B6427A841FACA2B500AF453B /* udnie_style.mlmodel */; };
+		B6427A891FACA80A00AF453B /* StyleTransferInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6427A881FACA80A00AF453B /* StyleTransferInput.swift */; };
+		B6427A8B1FACA94400AF453B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B6427A8A1FACA94400AF453B /* Assets.xcassets */; };
 		B66013481FABCF4100E2D809 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66013471FABCF4100E2D809 /* AppDelegate.swift */; };
 		B660134A1FABCF4100E2D809 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = B66013491FABCF4100E2D809 /* art.scnassets */; };
 		B660134C1FABCF4100E2D809 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B660134B1FABCF4100E2D809 /* ViewController.swift */; };
 		B660134F1FABCF4100E2D809 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B660134D1FABCF4100E2D809 /* Main.storyboard */; };
-		B66013511FABCF4100E2D809 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B66013501FABCF4100E2D809 /* Assets.xcassets */; };
 		B66013541FABCF4100E2D809 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B66013521FABCF4100E2D809 /* LaunchScreen.storyboard */; };
 		B660135F1FABCF4100E2D809 /* ARSMUExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B660135E1FABCF4100E2D809 /* ARSMUExampleTests.swift */; };
 		B660136A1FABCF4100E2D809 /* ARSMUExampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66013691FABCF4100E2D809 /* ARSMUExampleUITests.swift */; };
+		B66013821FABF43E00E2D809 /* UIImage+scaling.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66013811FABF43E00E2D809 /* UIImage+scaling.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,12 +40,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B6427A801FAC08DB00AF453B /* wave_style.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = wave_style.mlmodel; sourceTree = "<group>"; };
+		B6427A821FACA2AC00AF453B /* mosaic_style.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = mosaic_style.mlmodel; sourceTree = "<group>"; };
+		B6427A841FACA2B500AF453B /* udnie_style.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = udnie_style.mlmodel; sourceTree = "<group>"; };
+		B6427A881FACA80A00AF453B /* StyleTransferInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleTransferInput.swift; sourceTree = "<group>"; };
+		B6427A8A1FACA94400AF453B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B66013441FABCF4100E2D809 /* ARSMUExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARSMUExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B66013471FABCF4100E2D809 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B66013491FABCF4100E2D809 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
 		B660134B1FABCF4100E2D809 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		B660134E1FABCF4100E2D809 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		B66013501FABCF4100E2D809 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B66013531FABCF4100E2D809 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B66013551FABCF4100E2D809 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B660135A1FABCF4100E2D809 /* ARSMUExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ARSMUExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -49,6 +58,7 @@
 		B66013651FABCF4100E2D809 /* ARSMUExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ARSMUExampleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B66013691FABCF4100E2D809 /* ARSMUExampleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARSMUExampleUITests.swift; sourceTree = "<group>"; };
 		B660136B1FABCF4100E2D809 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B66013811FABF43E00E2D809 /* UIImage+scaling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+scaling.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,11 +109,16 @@
 		B66013461FABCF4100E2D809 /* ARSMUExample */ = {
 			isa = PBXGroup;
 			children = (
+				B6427A801FAC08DB00AF453B /* wave_style.mlmodel */,
+				B6427A821FACA2AC00AF453B /* mosaic_style.mlmodel */,
+				B6427A841FACA2B500AF453B /* udnie_style.mlmodel */,
 				B66013471FABCF4100E2D809 /* AppDelegate.swift */,
 				B66013491FABCF4100E2D809 /* art.scnassets */,
 				B660134B1FABCF4100E2D809 /* ViewController.swift */,
+				B6427A8A1FACA94400AF453B /* Assets.xcassets */,
+				B6427A881FACA80A00AF453B /* StyleTransferInput.swift */,
+				B66013811FABF43E00E2D809 /* UIImage+scaling.swift */,
 				B660134D1FABCF4100E2D809 /* Main.storyboard */,
-				B66013501FABCF4100E2D809 /* Assets.xcassets */,
 				B66013521FABCF4100E2D809 /* LaunchScreen.storyboard */,
 				B66013551FABCF4100E2D809 /* Info.plist */,
 			);
@@ -237,7 +252,7 @@
 			files = (
 				B660134A1FABCF4100E2D809 /* art.scnassets in Resources */,
 				B66013541FABCF4100E2D809 /* LaunchScreen.storyboard in Resources */,
-				B66013511FABCF4100E2D809 /* Assets.xcassets in Resources */,
+				B6427A8B1FACA94400AF453B /* Assets.xcassets in Resources */,
 				B660134F1FABCF4100E2D809 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -263,8 +278,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B6427A891FACA80A00AF453B /* StyleTransferInput.swift in Sources */,
 				B660134C1FABCF4100E2D809 /* ViewController.swift in Sources */,
 				B66013481FABCF4100E2D809 /* AppDelegate.swift in Sources */,
+				B6427A831FACA2AC00AF453B /* mosaic_style.mlmodel in Sources */,
+				B6427A811FAC08DB00AF453B /* wave_style.mlmodel in Sources */,
+				B66013821FABF43E00E2D809 /* UIImage+scaling.swift in Sources */,
+				B6427A851FACA2B500AF453B /* udnie_style.mlmodel in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -431,6 +451,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = F69WJ27LN4;
 				INFOPLIST_FILE = ARSMUExample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = SMU.ARSMUExample;
@@ -445,6 +466,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = F69WJ27LN4;
 				INFOPLIST_FILE = ARSMUExample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = SMU.ARSMUExample;
