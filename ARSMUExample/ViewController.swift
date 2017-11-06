@@ -33,8 +33,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         sceneView.showsStatistics = true
         
         // Create a new scene
-        let scene = SCNScene(named: "art.scnassets/CubeSmall.dae")!
-        //scene.rootNode.childNode(withName: "cube", recursively: true)?.scale = SCNVector3Make(0.01, 0.01, 0.01)
+        // distilled from https://www.thingiverse.com/thing:210565/#files 
+        let scene = SCNScene(named: "art.scnassets/peruna.dae")!
         
         // Set the scene to the view
         sceneView.scene = scene
