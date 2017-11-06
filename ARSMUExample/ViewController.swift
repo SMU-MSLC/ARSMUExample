@@ -17,11 +17,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     //MARK: Class Properties
     
-    let imageSize = 720
-    var lastNode:SCNNode? = nil
-    
-    // Special thanks to SMU students T. Pop, J. Ledford, and L. Wood for these styles!
-    var models = [wave_style().model,mosaic_style().model,udnie_style().model] as [MLModel]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,8 +28,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         sceneView.showsStatistics = true
         
         // Create a new scene
-        // distilled from https://www.thingiverse.com/thing:210565/#files 
-        let scene = SCNScene(named: "art.scnassets/peruna.dae")!
+        let scene = SCNScene(named: "art.scnassets/ship.scn")!
         
         // Set the scene to the view
         sceneView.scene = scene
@@ -57,23 +51,14 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         let imagePlane = SCNPlane(width:sceneView.bounds.width/6000,
                                   height:sceneView.bounds.height/6000)
         
-        // take a snapshot of the current image shown to user
-        // TODO: spawn this on a separate queue
-        //       and then come back to main queue for adding node
-        let idx = random(models.count) // choose random style
-        print(idx)
-        let startImage = sceneView.snapshot()
-        let newImage = stylizeImage(cgImage: startImage.cgImage!, model: models[idx])
-
-        imagePlane.firstMaterial?.diffuse.contents = newImage
+        
+        imagePlane.firstMaterial?.diffuse.contents = UIColor.red
         imagePlane.firstMaterial?.lightingModel = .constant
         
         // add the node to the scene
         let planeNode = SCNNode(geometry:imagePlane)
         sceneView.scene.rootNode.addChildNode(planeNode)
         
-        // save this last node
-        lastNode = planeNode
         
         // update the node to be a bit in front of the camera inside the AR session
         
@@ -86,30 +71,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
     }
     
-    @IBAction func didSwipe(_ sender: UISwipeGestureRecognizer) {
-        
-        
-        if let node = lastNode {
-            var moveAction:SCNAction
-            
-            switch sender.direction {
-            case .left:
-                moveAction = SCNAction.moveBy(x: -0.1, y: 0.0, z: 0, duration: 0.25)
-            case .right:
-                moveAction = SCNAction.moveBy(x: 0.1, y: 0.0, z: 0, duration: 0.25)
-            case .up:
-                moveAction = SCNAction.moveBy(x: 0.0, y: 0.1, z: 0, duration: 0.25)
-            case .down:
-                moveAction = SCNAction.moveBy(x: 0.0, y: -0.1, z: 0, duration: 0.25)
-            default:
-                moveAction = SCNAction.moveBy(x: 0.0, y: 0.0, z: 0, duration: 0.25)
-            }
-            
-
-            node.runAction(moveAction)
-        }
-        
-    }
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -156,47 +118,5 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     
-    // code from fast style transfer example in iOS app
-    // https://github.com/prisma-ai/torch2coreml/tree/master/example/fast-neural-style/ios
-    private func stylizeImage(cgImage: CGImage, model: MLModel) -> CGImage {
-        let input = StyleTransferInput(input: pixelBuffer(cgImage: cgImage, width: imageSize, height: imageSize))
-        let outFeatures = try! model.prediction(from: input)
-        let output = outFeatures.featureValue(for: "outputImage")!.imageBufferValue!
-        CVPixelBufferLockBaseAddress(output, .readOnly)
-        let width = CVPixelBufferGetWidth(output)
-        let height = CVPixelBufferGetHeight(output)
-        let data = CVPixelBufferGetBaseAddress(output)!
-        
-        let outContext = CGContext(data: data,
-                                   width: width,
-                                   height: height,
-                                   bitsPerComponent: 8,
-                                   bytesPerRow: CVPixelBufferGetBytesPerRow(output),
-                                   space: CGColorSpaceCreateDeviceRGB(),
-                                   bitmapInfo: CGImageByteOrderInfo.order32Little.rawValue | CGImageAlphaInfo.noneSkipFirst.rawValue)!
-        let outImage = outContext.makeImage()!
-        CVPixelBufferUnlockBaseAddress(output, .readOnly)
-        
-        return outImage
-    }
     
-    //https://github.com/prisma-ai/torch2coreml/tree/master/example/fast-neural-style/ios
-    private func pixelBuffer(cgImage: CGImage, width: Int, height: Int) -> CVPixelBuffer {
-        var pixelBuffer: CVPixelBuffer? = nil
-        let status = CVPixelBufferCreate(kCFAllocatorDefault, width, height, kCVPixelFormatType_32BGRA , nil, &pixelBuffer)
-        if status != kCVReturnSuccess {
-            fatalError("Cannot create pixel buffer for image")
-        }
-        
-        CVPixelBufferLockBaseAddress(pixelBuffer!, CVPixelBufferLockFlags.init(rawValue: 0))
-        let data = CVPixelBufferGetBaseAddress(pixelBuffer!)
-        let rgbColorSpace = CGColorSpaceCreateDeviceRGB()
-        let bitmapInfo = CGBitmapInfo(rawValue: CGBitmapInfo.byteOrder32Little.rawValue | CGImageAlphaInfo.noneSkipFirst.rawValue)
-        let context = CGContext(data: data, width: width, height: height, bitsPerComponent: 8, bytesPerRow: CVPixelBufferGetBytesPerRow(pixelBuffer!), space: rgbColorSpace, bitmapInfo: bitmapInfo.rawValue)
-        
-        context?.draw(cgImage, in: CGRect(x: 0, y: 0, width: width, height: height))
-        CVPixelBufferUnlockBaseAddress(pixelBuffer!, CVPixelBufferLockFlags(rawValue: 0))
-        
-        return pixelBuffer!
-    }
 }
