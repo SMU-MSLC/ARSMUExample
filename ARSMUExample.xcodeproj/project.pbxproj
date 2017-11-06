@@ -7,9 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B6427A811FAC08DB00AF453B /* wave_style.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = B6427A801FAC08DB00AF453B /* wave_style.mlmodel */; };
-		B6427A831FACA2AC00AF453B /* mosaic_style.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = B6427A821FACA2AC00AF453B /* mosaic_style.mlmodel */; };
-		B6427A851FACA2B500AF453B /* udnie_style.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = B6427A841FACA2B500AF453B /* udnie_style.mlmodel */; };
 		B6427A891FACA80A00AF453B /* StyleTransferInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6427A881FACA80A00AF453B /* StyleTransferInput.swift */; };
 		B6427A8B1FACA94400AF453B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B6427A8A1FACA94400AF453B /* Assets.xcassets */; };
 		B66013481FABCF4100E2D809 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66013471FABCF4100E2D809 /* AppDelegate.swift */; };
@@ -40,9 +37,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		B6427A801FAC08DB00AF453B /* wave_style.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = wave_style.mlmodel; sourceTree = "<group>"; };
-		B6427A821FACA2AC00AF453B /* mosaic_style.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = mosaic_style.mlmodel; sourceTree = "<group>"; };
-		B6427A841FACA2B500AF453B /* udnie_style.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = udnie_style.mlmodel; sourceTree = "<group>"; };
 		B6427A881FACA80A00AF453B /* StyleTransferInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleTransferInput.swift; sourceTree = "<group>"; };
 		B6427A8A1FACA94400AF453B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B66013441FABCF4100E2D809 /* ARSMUExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARSMUExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -109,9 +103,6 @@
 		B66013461FABCF4100E2D809 /* ARSMUExample */ = {
 			isa = PBXGroup;
 			children = (
-				B6427A801FAC08DB00AF453B /* wave_style.mlmodel */,
-				B6427A821FACA2AC00AF453B /* mosaic_style.mlmodel */,
-				B6427A841FACA2B500AF453B /* udnie_style.mlmodel */,
 				B66013471FABCF4100E2D809 /* AppDelegate.swift */,
 				B66013491FABCF4100E2D809 /* art.scnassets */,
 				B660134B1FABCF4100E2D809 /* ViewController.swift */,
@@ -281,10 +272,7 @@
 				B6427A891FACA80A00AF453B /* StyleTransferInput.swift in Sources */,
 				B660134C1FABCF4100E2D809 /* ViewController.swift in Sources */,
 				B66013481FABCF4100E2D809 /* AppDelegate.swift in Sources */,
-				B6427A831FACA2AC00AF453B /* mosaic_style.mlmodel in Sources */,
-				B6427A811FAC08DB00AF453B /* wave_style.mlmodel in Sources */,
 				B66013821FABF43E00E2D809 /* UIImage+scaling.swift in Sources */,
-				B6427A851FACA2B500AF453B /* udnie_style.mlmodel in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
