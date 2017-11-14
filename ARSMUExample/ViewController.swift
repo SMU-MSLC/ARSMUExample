@@ -13,11 +13,12 @@ import Vision
 
 class ViewController: UIViewController, ARSCNViewDelegate {
 
+    //MARK: - Class Properties
     @IBOutlet var sceneView: ARSCNView!
     
-    //MARK: Class Properties
     
     
+    // MARK: - View Controller Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -35,10 +36,25 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
     }
     
-    func random(_ n:Int) -> Int
-    {
-        return Int(arc4random_uniform(UInt32(n)))
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // Create a session configuration
+        let configuration = ARWorldTrackingConfiguration()
+        
+        // Run the view's session
+        sceneView.session.run(configuration)
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        // Pause the view's session
+        sceneView.session.pause()
+    }
+    
+    // MARK: - UI Interactions
     
     @IBAction func handleTap(_ sender: UITapGestureRecognizer) {
         
@@ -73,34 +89,10 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        // Create a session configuration
-        let configuration = ARWorldTrackingConfiguration()
-
-        // Run the view's session
-        sceneView.session.run(configuration)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        // Pause the view's session
-        sceneView.session.pause()
-    }
-    
 
     // MARK: - ARSCNViewDelegate
     
-/*
-    // Override to create and configure nodes for anchors added to the view's session.
-    func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
-        let node = SCNNode()
-     
-        return node
-    }
-*/
+
     
     func session(_ session: ARSession, didFailWithError error: Error) {
         // Present an error message to the user
