@@ -20,6 +20,9 @@
 		B660135F1FABCF4100E2D809 /* ARSMUExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B660135E1FABCF4100E2D809 /* ARSMUExampleTests.swift */; };
 		B660136A1FABCF4100E2D809 /* ARSMUExampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66013691FABCF4100E2D809 /* ARSMUExampleUITests.swift */; };
 		B66013821FABF43E00E2D809 /* UIImage+scaling.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66013811FABF43E00E2D809 /* UIImage+scaling.swift */; };
+		B6E67067237B6F72003670A3 /* Elephant.arobject in Resources */ = {isa = PBXBuildFile; fileRef = B6E67066237B6F71003670A3 /* Elephant.arobject */; };
+		B6E67069237BA69B003670A3 /* Scan_20-45-50.arobject in Resources */ = {isa = PBXBuildFile; fileRef = B6E67068237BA69B003670A3 /* Scan_20-45-50.arobject */; };
+		B6E6706B237C90AF003670A3 /* Dumbo.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = B6E6706A237C90AF003670A3 /* Dumbo.mp4 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +62,9 @@
 		B66013691FABCF4100E2D809 /* ARSMUExampleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARSMUExampleUITests.swift; sourceTree = "<group>"; };
 		B660136B1FABCF4100E2D809 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B66013811FABF43E00E2D809 /* UIImage+scaling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+scaling.swift"; sourceTree = "<group>"; };
+		B6E67066237B6F71003670A3 /* Elephant.arobject */ = {isa = PBXFileReference; lastKnownFileType = file; path = Elephant.arobject; sourceTree = "<group>"; };
+		B6E67068237BA69B003670A3 /* Scan_20-45-50.arobject */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Scan_20-45-50.arobject"; sourceTree = "<group>"; };
+		B6E6706A237C90AF003670A3 /* Dumbo.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Dumbo.mp4; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +118,9 @@
 				B6427A801FAC08DB00AF453B /* wave_style.mlmodel */,
 				B6427A821FACA2AC00AF453B /* mosaic_style.mlmodel */,
 				B6427A841FACA2B500AF453B /* udnie_style.mlmodel */,
+				B6E67066237B6F71003670A3 /* Elephant.arobject */,
+				B6E67068237BA69B003670A3 /* Scan_20-45-50.arobject */,
+				B6E6706A237C90AF003670A3 /* Dumbo.mp4 */,
 				B66013471FABCF4100E2D809 /* AppDelegate.swift */,
 				B66013491FABCF4100E2D809 /* art.scnassets */,
 				B660134B1FABCF4100E2D809 /* ViewController.swift */,
@@ -206,20 +215,23 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0900;
-				LastUpgradeCheck = 0900;
+				LastUpgradeCheck = 1120;
 				ORGANIZATIONNAME = "Eric Larson";
 				TargetAttributes = {
 					B66013431FABCF4100E2D809 = {
 						CreatedOnToolsVersion = 9.0.1;
+						LastSwiftMigration = 1120;
 						ProvisioningStyle = Automatic;
 					};
 					B66013591FABCF4100E2D809 = {
 						CreatedOnToolsVersion = 9.0.1;
+						LastSwiftMigration = 1120;
 						ProvisioningStyle = Automatic;
 						TestTargetID = B66013431FABCF4100E2D809;
 					};
 					B66013641FABCF4100E2D809 = {
 						CreatedOnToolsVersion = 9.0.1;
+						LastSwiftMigration = 1120;
 						ProvisioningStyle = Automatic;
 						TestTargetID = B66013431FABCF4100E2D809;
 					};
@@ -250,10 +262,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B6E67069237BA69B003670A3 /* Scan_20-45-50.arobject in Resources */,
 				B660134A1FABCF4100E2D809 /* art.scnassets in Resources */,
+				B6E67067237B6F72003670A3 /* Elephant.arobject in Resources */,
 				B66013541FABCF4100E2D809 /* LaunchScreen.storyboard in Resources */,
 				B6427A8B1FACA94400AF453B /* Assets.xcassets in Resources */,
 				B660134F1FABCF4100E2D809 /* Main.storyboard in Resources */,
+				B6E6706B237C90AF003670A3 /* Dumbo.mp4 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -353,6 +368,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -360,6 +376,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -387,7 +404,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -410,6 +427,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -417,6 +435,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -438,7 +457,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -451,12 +470,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = F69WJ27LN4;
+				DEVELOPMENT_TEAM = APD62CDC25;
 				INFOPLIST_FILE = ARSMUExample/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = SMU.ARSMUExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -466,12 +486,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = F69WJ27LN4;
+				DEVELOPMENT_TEAM = APD62CDC25;
 				INFOPLIST_FILE = ARSMUExample/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = SMU.ARSMUExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -482,11 +503,12 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = APD62CDC25;
 				INFOPLIST_FILE = ARSMUExampleTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = SMU.ARSMUExampleTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ARSMUExample.app/ARSMUExample";
 			};
@@ -498,11 +520,12 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = APD62CDC25;
 				INFOPLIST_FILE = ARSMUExampleTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = SMU.ARSMUExampleTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ARSMUExample.app/ARSMUExample";
 			};
@@ -513,11 +536,12 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = APD62CDC25;
 				INFOPLIST_FILE = ARSMUExampleUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = SMU.ARSMUExampleUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = ARSMUExample;
 			};
@@ -528,11 +552,12 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = APD62CDC25;
 				INFOPLIST_FILE = ARSMUExampleUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = SMU.ARSMUExampleUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = ARSMUExample;
 			};

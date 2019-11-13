@@ -20,6 +20,11 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     let imageSize = 720
     var lastNode:SCNNode? = nil
     
+    var label = SCNNode()
+    var objectFound = false
+    var objectNode:SCNNode? = nil
+    var numArtImages = 0
+    
     // Special thanks to SMU students T. Pop, J. Ledford, and L. Wood for these styles!
     var models = [wave_style().model,mosaic_style().model,udnie_style().model] as [MLModel]
     
@@ -38,6 +43,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         // Set the scene to the view
         sceneView.scene = scene
+        
+        label = createTextNode(textString: "Welcome to the Art Gallery!")!
         
     }
     
@@ -58,31 +65,65 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                                   height:sceneView.bounds.height/6000)
         
         // take a snapshot of the current image shown to user
-        // TODO: spawn this on a separate queue
+        // spawn this on a separate queue
         //       and then come back to main queue for adding node
         let idx = random(models.count) // choose random style
-        print(idx)
+        
         let startImage = sceneView.snapshot()
-        let newImage = stylizeImage(cgImage: startImage.cgImage!, model: models[idx])
+        
+        DispatchQueue.global(qos: .background).async { [weak self] in
+            // this is spawned on background process so that it is not at the expense of
+            // the AR Session performance
+            guard let self = self else {
+                return // this prevent memory cycles
+            }
+                
+            let newImage = self.stylizeImage(cgImage: startImage.cgImage!, model: self.models[idx])
 
-        imagePlane.firstMaterial?.diffuse.contents = newImage
-        imagePlane.firstMaterial?.lightingModel = .constant
-        
-        // add the node to the scene
-        let planeNode = SCNNode(geometry:imagePlane)
-        sceneView.scene.rootNode.addChildNode(planeNode)
-        
-        // save this last node
-        lastNode = planeNode
-        
-        // update the node to be a bit in front of the camera inside the AR session
-        
-        // step one create a translation transform
-        var translation = matrix_identity_float4x4
-        translation.columns.3.z = -0.1
-        
-        // step two, apply translation relative to camera for the node
-        planeNode.simdTransform = matrix_multiply(currentFrame.camera.transform, translation )
+            imagePlane.firstMaterial?.diffuse.contents = newImage
+            imagePlane.firstMaterial?.lightingModel = .constant
+            imagePlane.firstMaterial?.isDoubleSided = true
+            
+            // add the node to the scene
+            let planeNode = SCNNode(geometry:imagePlane)
+            
+            
+            // save this last node
+            self.lastNode = planeNode
+            
+            // Now the image is stylized, added to a node, and ready to be added into the AR session
+            
+            // To update the UI, we should now change to main thread
+            DispatchQueue.main.async{
+                if let object=self.objectNode{
+                    // add node in relation to other node
+                    // keep tweaking position along the "art" walls
+                    // so that the images appear in rows
+                    let imagesPerRow:Int = 6
+                    let separation:Float = 0.15
+                    let x = -separation * Float(imagesPerRow/2) + Float(self.numArtImages % imagesPerRow) * separation
+                    let y = 0.1 * Float(Int(self.numArtImages / imagesPerRow))
+                    
+                    planeNode.position = SCNVector3Make(x,0,y)// tweak position on anchor
+                    object.addChildNode(planeNode)
+                    
+                    self.numArtImages += 1
+                }
+                else{
+                    // otherwise, add in the node where the camera is
+                    // update the node to be a bit in front of the camera inside the AR session
+                    self.sceneView.scene.rootNode.addChildNode(planeNode)
+                    
+                    // step one create a translation transform
+                    var translation = matrix_identity_float4x4
+                    translation.columns.3.z = -0.1 // make transition a little in front of camera
+                    
+                    // step two, apply translation relative to camera for the node
+                    // if we have recognized an object, add in the node at the recognized object
+                    planeNode.simdTransform = matrix_multiply(currentFrame.camera.transform, translation )
+                }
+            }
+        }
         
     }
     
@@ -116,10 +157,17 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         // Create a session configuration
         let configuration = ARWorldTrackingConfiguration()
+        
+        // here is where we setup detection of 3D point clouds, drag into AR assests
+        guard let referenceObjects = ARReferenceObject.referenceObjects(inGroupNamed: "gallery", bundle: nil) else {
+            fatalError("Missing expected asset catalog resources.")
+        }
+        configuration.detectionObjects = referenceObjects // only one object to detect, which is the engine
 
         // Run the view's session
         sceneView.session.run(configuration)
     }
+    
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -130,15 +178,62 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
 
     // MARK: - ARSCNViewDelegate
-    
-/*
     // Override to create and configure nodes for anchors added to the view's session.
-    func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
-        let node = SCNNode()
-     
-        return node
+    func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
+        
+        // This delegate is called when an object in the ARObject list is detected
+        // Perform setup of the object and add any nodes, slaved to the position
+        // of the detected object (so that they also get corrected from ARKit
+        // if the tracking get updated).
+        
+        
+        if let objectAnchor = anchor as? ARObjectAnchor {
+            if (objectNode != nil) { return } // if we already recognized the object, don't do this again
+
+            print(objectAnchor.name! + " found")
+            
+            // add some text and action for animating the text
+            let prevScale = label.scale
+            label.scale = SCNVector3(CGFloat(prevScale.x)/3, CGFloat(prevScale.x)/3, CGFloat(prevScale.x)/3)
+            
+            let scaleAction = SCNAction.scale(to: CGFloat(prevScale.x), duration: 2)
+            scaleAction.timingMode = .easeIn
+            
+            node.addChildNode(label)
+            
+            self.label.runAction(scaleAction, forKey: "scaleAction")
+            
+            
+            //==================================================
+            // add a box, translucent, around the object
+            let box = self.createBox()
+            node.addChildNode(box!)
+            
+            let alphaAction = SCNAction.fadeOpacity(to: 0.1, duration: 5)
+            box?.runAction(alphaAction)
+            
+            //==================================================
+            // add in a video near the detected object
+            let contentPlane = SCNPlane(width: CGFloat(0.1), height: CGFloat(0.05))
+            
+            // make into material
+            let avMaterial = SCNMaterial()
+            avMaterial.diffuse.contents = getLoopingAVPlayerFromFile(file:"Dumbo", ext:"mp4")
+            
+            // play on a plane
+            contentPlane.materials = [avMaterial]
+            
+            contentPlane.firstMaterial?.isDoubleSided = true
+            
+            let videoNode = SCNNode()
+            videoNode.position = SCNVector3Make(-0.1, 0.2, 0.0)
+            videoNode.geometry = contentPlane
+            node.addChildNode(videoNode)
+
+            objectNode = node // save for adding to this node later on
+        }
+
     }
-*/
     
     func session(_ session: ARSession, didFailWithError error: Error) {
         // Present an error message to the user
@@ -199,6 +294,75 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         return pixelBuffer!
     }
+    
+    func createTextNode(textString: String)->SCNNode?{
+        
+        let textNode:SCNNode? = SCNNode()
+        textNode!.geometry = setupTextParameters(textString: textString) // make this node text
+        textNode!.scale = SCNVector3Make(0.001, 0.001, 0.001)
+        textNode!.position = SCNVector3Make(-0.1, 0.1, 0.0)// tweak position over anchor
+        textNode!.eulerAngles.y = 0
+        textNode?.castsShadow = true
+        
+        
+        return textNode
+    }
+    
+    func setupTextParameters(textString: String)->SCNText{
+        let text = SCNText(string: textString, extrusionDepth: 1)
+        
+        let material = SCNMaterial()
+        material.diffuse.contents = UIColor.white
+        
+        text.flatness = 0
+        text.isWrapped = true
+        text.materials = [material]
+        return text
+    }
+    
+    var avPlayer:AVPlayer! = nil
+    func getLoopingAVPlayerFromFile(file:String, ext:String)->AVPlayer?{
+        // https://www.raywenderlich.com/6957-building-a-museum-app-with-arkit-2
+        guard let videoURL = Bundle.main.url(forResource: file,
+                                             withExtension: ext) else {
+                                                return nil
+        }
+        
+        let avPlayerItem = AVPlayerItem(url: videoURL)
+        if avPlayer==nil{
+            avPlayer = AVPlayer(playerItem: avPlayerItem)
+            avPlayer.play()
+            
+            // replay
+            NotificationCenter.default.addObserver(
+                forName: .AVPlayerItemDidPlayToEndTime,
+                object: nil,
+                queue: nil) { notification in
+                    self.avPlayer.seek(to: .zero)
+                    self.avPlayer.play()
+            }
+        }else{
+            avPlayer = AVPlayer(playerItem: avPlayerItem)
+            avPlayer.play()
+        }
+        
+        
+        return avPlayer
+    }
+    
+    func createBox()->SCNNode?{
+        let boxNode:SCNNode? = SCNNode()
+        
+        let box = SCNBox(width: CGFloat(0.1), height: CGFloat(0.1), length: CGFloat(0.1), chamferRadius: 0.01)
+        box.firstMaterial?.diffuse.contents = UIColor(white: 1.0, alpha: 0.8)
+        box.firstMaterial?.isDoubleSided = true
+        
+        boxNode!.geometry = box // make this node a box!
+        boxNode!.position = SCNVector3Make(0.0, 0.0, 0.0)// tweak position over anchor
+        
+        return boxNode
+    }
+    
 }
 
 
