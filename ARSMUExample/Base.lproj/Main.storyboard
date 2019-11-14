@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BV1-FR-VrT">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BV1-FR-VrT">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -22,6 +21,7 @@
                             <outletCollection property="gestureRecognizers" destination="5Iq-yk-cYW" appends="YES" id="LCV-CK-V37"/>
                             <outletCollection property="gestureRecognizers" destination="MCE-kS-VvO" appends="YES" id="7AD-S6-gJW"/>
                             <outletCollection property="gestureRecognizers" destination="Bbi-RE-9E0" appends="YES" id="jqa-Xp-c6G"/>
+                            <outletCollection property="gestureRecognizers" destination="dYT-50-mcX" appends="YES" id="pyt-TO-bso"/>
                         </connections>
                     </arscnView>
                     <connections>
@@ -54,7 +54,13 @@
                         <action selector="didSwipe:" destination="BV1-FR-VrT" id="toS-QZ-Pxm"/>
                     </connections>
                 </swipeGestureRecognizer>
+                <rotationGestureRecognizer id="dYT-50-mcX">
+                    <connections>
+                        <action selector="userDidRotate:" destination="BV1-FR-VrT" id="LSf-Io-89n"/>
+                    </connections>
+                </rotationGestureRecognizer>
             </objects>
+            <point key="canvasLocation" x="138" y="110"/>
         </scene>
     </scenes>
 </document>

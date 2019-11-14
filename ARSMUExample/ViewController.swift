@@ -41,6 +41,17 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
     }
     
+    @IBAction func userDidRotate(_ sender: UIRotationGestureRecognizer) {
+        if let node = lastNode{
+            let action = SCNAction.rotateTo(x: 0,
+                                            y: 0,
+                                            z: sender.rotation,
+                                            duration: 0.1)
+            
+            node.runAction(action)
+        }
+    }
+    
     func random(_ n:Int) -> Int
     {
         return Int(arc4random_uniform(UInt32(n)))
@@ -63,26 +74,32 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         let idx = random(models.count) // choose random style
         print(idx)
         let startImage = sceneView.snapshot()
-        let newImage = stylizeImage(cgImage: startImage.cgImage!, model: models[idx])
-
-        imagePlane.firstMaterial?.diffuse.contents = newImage
-        imagePlane.firstMaterial?.lightingModel = .constant
-        
-        // add the node to the scene
-        let planeNode = SCNNode(geometry:imagePlane)
-        sceneView.scene.rootNode.addChildNode(planeNode)
-        
-        // save this last node
-        lastNode = planeNode
-        
-        // update the node to be a bit in front of the camera inside the AR session
-        
-        // step one create a translation transform
-        var translation = matrix_identity_float4x4
-        translation.columns.3.z = -0.1
-        
-        // step two, apply translation relative to camera for the node
-        planeNode.simdTransform = matrix_multiply(currentFrame.camera.transform, translation )
+        DispatchQueue.global(qos: .background).async{
+            let newImage = self.stylizeImage(cgImage: startImage.cgImage!, model: self.models[idx])
+            
+            DispatchQueue.main.async {
+                imagePlane.firstMaterial?.diffuse.contents = newImage
+                imagePlane.firstMaterial?.lightingModel = .constant
+                imagePlane.firstMaterial?.isDoubleSided = true
+                
+                // add the node to the scene
+                let planeNode = SCNNode(geometry:imagePlane)
+                self.sceneView.scene.rootNode.addChildNode(planeNode)
+                
+                // save this last node
+                self.lastNode = planeNode
+                
+                // update the node to be a bit in front of the camera inside the AR session
+                
+                // step one create a translation transform
+                var translation = matrix_identity_float4x4
+                translation.columns.3.z = -0.1
+                
+                // step two, apply translation relative to camera for the node
+                planeNode.simdTransform = matrix_multiply(currentFrame.camera.transform, translation )
+            }
+            
+        }
         
     }
     
@@ -90,23 +107,26 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         
         if let node = lastNode {
+            let moveValue:CGFloat = 10
+            let duration:TimeInterval = 5
             var moveAction:SCNAction
             
             switch sender.direction {
             case .left:
-                moveAction = SCNAction.moveBy(x: -0.1, y: 0.0, z: 0, duration: 0.25)
+                moveAction = SCNAction.moveBy(x: -moveValue, y: 0.0, z: 0, duration: duration)
             case .right:
-                moveAction = SCNAction.moveBy(x: 0.1, y: 0.0, z: 0, duration: 0.25)
+                moveAction = SCNAction.moveBy(x: moveValue, y: 0.0, z: 0, duration: duration)
             case .up:
-                moveAction = SCNAction.moveBy(x: 0.0, y: 0.1, z: 0, duration: 0.25)
+                moveAction = SCNAction.moveBy(x: 0.0, y: moveValue, z: 0, duration: duration)
             case .down:
-                moveAction = SCNAction.moveBy(x: 0.0, y: -0.1, z: 0, duration: 0.25)
+                moveAction = SCNAction.moveBy(x: 0.0, y: -moveValue, z: 0, duration: duration)
             default:
                 moveAction = SCNAction.moveBy(x: 0.0, y: 0.0, z: 0, duration: 0.25)
             }
             
 
             node.runAction(moveAction)
+            
         }
         
     }
