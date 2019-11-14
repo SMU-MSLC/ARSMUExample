@@ -129,7 +129,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     @IBAction func didSwipe(_ sender: UISwipeGestureRecognizer) {
         
-        
+        // for making actions on nodes (images) that are already added to the gallery
         if let node = lastNode {
             var moveAction:SCNAction
             
