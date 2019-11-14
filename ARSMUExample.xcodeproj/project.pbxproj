@@ -23,6 +23,7 @@
 		B6E67067237B6F72003670A3 /* Elephant.arobject in Resources */ = {isa = PBXBuildFile; fileRef = B6E67066237B6F71003670A3 /* Elephant.arobject */; };
 		B6E67069237BA69B003670A3 /* Scan_20-45-50.arobject in Resources */ = {isa = PBXBuildFile; fileRef = B6E67068237BA69B003670A3 /* Scan_20-45-50.arobject */; };
 		B6E6706B237C90AF003670A3 /* Dumbo.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = B6E6706A237C90AF003670A3 /* Dumbo.mp4 */; };
+		B6E6706D237D9E18003670A3 /* PersonBike.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = B6E6706C237D9E18003670A3 /* PersonBike.mlmodel */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +66,7 @@
 		B6E67066237B6F71003670A3 /* Elephant.arobject */ = {isa = PBXFileReference; lastKnownFileType = file; path = Elephant.arobject; sourceTree = "<group>"; };
 		B6E67068237BA69B003670A3 /* Scan_20-45-50.arobject */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Scan_20-45-50.arobject"; sourceTree = "<group>"; };
 		B6E6706A237C90AF003670A3 /* Dumbo.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Dumbo.mp4; sourceTree = "<group>"; };
+		B6E6706C237D9E18003670A3 /* PersonBike.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = PersonBike.mlmodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +120,7 @@
 				B6427A801FAC08DB00AF453B /* wave_style.mlmodel */,
 				B6427A821FACA2AC00AF453B /* mosaic_style.mlmodel */,
 				B6427A841FACA2B500AF453B /* udnie_style.mlmodel */,
+				B6E6706C237D9E18003670A3 /* PersonBike.mlmodel */,
 				B6E67066237B6F71003670A3 /* Elephant.arobject */,
 				B6E67068237BA69B003670A3 /* Scan_20-45-50.arobject */,
 				B6E6706A237C90AF003670A3 /* Dumbo.mp4 */,
@@ -297,6 +300,7 @@
 				B660134C1FABCF4100E2D809 /* ViewController.swift in Sources */,
 				B66013481FABCF4100E2D809 /* AppDelegate.swift in Sources */,
 				B6427A831FACA2AC00AF453B /* mosaic_style.mlmodel in Sources */,
+				B6E6706D237D9E18003670A3 /* PersonBike.mlmodel in Sources */,
 				B6427A811FAC08DB00AF453B /* wave_style.mlmodel in Sources */,
 				B66013821FABF43E00E2D809 /* UIImage+scaling.swift in Sources */,
 				B6427A851FACA2B500AF453B /* udnie_style.mlmodel in Sources */,

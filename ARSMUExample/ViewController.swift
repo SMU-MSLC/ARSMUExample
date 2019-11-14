@@ -15,7 +15,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
 
     @IBOutlet var sceneView: ARSCNView!
     
-    //MARK: Class Properties
+    //MARK: - Class Properties
     
     let imageSize = 720
     var lastNode:SCNNode? = nil
@@ -28,6 +28,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     // Special thanks to SMU students T. Pop, J. Ledford, and L. Wood for these styles!
     var models = [wave_style().model,mosaic_style().model,udnie_style().model] as [MLModel]
     
+    //MARK: - UI and Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -46,12 +47,12 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         label = createTextNode(textString: "Welcome to the Art Gallery!")!
         
+        setupDetectionOverlay()
+        setupVision(useCPUOnly:false) // set to use GPU, if FPS is a problem, change to true.
+        
     }
     
-    func random(_ n:Int) -> Int
-    {
-        return Int(arc4random_uniform(UInt32(n)))
-    }
+    
     
     @IBAction func handleTap(_ sender: UITapGestureRecognizer) {
         
@@ -127,6 +128,30 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // Create a session configuration
+        let configuration = ARWorldTrackingConfiguration()
+        
+        // here is where we setup detection of 3D point clouds, drag into AR assests
+        guard let referenceObjects = ARReferenceObject.referenceObjects(inGroupNamed: "gallery", bundle: nil) else {
+            fatalError("Missing expected asset catalog resources.")
+        }
+        configuration.detectionObjects = referenceObjects // only one object to detect, which is the engine
+
+        // Run the view's session
+        sceneView.session.run(configuration)
+    }
+    
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        // Pause the view's session
+        sceneView.session.pause()
+    }
+    
     @IBAction func didSwipe(_ sender: UISwipeGestureRecognizer) {
         
         // for making actions on nodes (images) that are already added to the gallery
@@ -152,29 +177,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        // Create a session configuration
-        let configuration = ARWorldTrackingConfiguration()
-        
-        // here is where we setup detection of 3D point clouds, drag into AR assests
-        guard let referenceObjects = ARReferenceObject.referenceObjects(inGroupNamed: "gallery", bundle: nil) else {
-            fatalError("Missing expected asset catalog resources.")
-        }
-        configuration.detectionObjects = referenceObjects // only one object to detect, which is the engine
-
-        // Run the view's session
-        sceneView.session.run(configuration)
-    }
     
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        // Pause the view's session
-        sceneView.session.pause()
-    }
     
 
     // MARK: - ARSCNViewDelegate
@@ -235,6 +238,52 @@ class ViewController: UIViewController, ARSCNViewDelegate {
 
     }
     
+    
+    // AR delegate where we run our image model on video frame
+    // check to be sure this is the proper delegate function for this.
+    var currentBuffer:CVPixelBuffer! = nil
+    func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
+        //MARK: Two, Get Image Frame from AR
+        // get current ARSession frame so that we can get AVSession Image Capture
+        guard let frame = sceneView.session.currentFrame else { return }
+
+        // check to be sure buffer is nil, which means free to process
+        guard self.currentBuffer == nil, case .normal = frame.camera.trackingState else {
+            // drop the frame if we are processing a current image or if AR is suffering tracking
+            return // just drop the frame
+        }
+        // Otherwise, let's get the image and analyze it!
+        
+        // Retain the image buffer for Vision processing.
+        self.currentBuffer = frame.capturedImage // the pixels to process
+        self.captureImageSize = frame.camera.imageResolution // needed for displaying overlays
+        
+        // get phone orientation (currently only supports lanscape left)
+        let exifOrientation = self.exifOrientationFromDeviceOrientation()
+        
+        // run in the background so that AR doesn't suffer performance
+        // this delegate function is called at nearly 60 FPS
+        DispatchQueue.global(qos: .background).async { [weak self] in
+            guard let self = self else {
+                return // this prevent memory cycles
+            }
+            
+            // generate a request to analyze the image for objects
+            let imageRequestHandler = VNImageRequestHandler(cvPixelBuffer: self.currentBuffer,
+                                                            orientation: exifOrientation,
+                                                            options: [:])
+            
+            //MARK: Three, Start Vision Request
+            // the handler for this was specified in setupVision
+            // when the request is done, we will call handleObjectRecognitionResult
+            do {
+                try imageRequestHandler.perform(self.requests)
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
     func session(_ session: ARSession, didFailWithError error: Error) {
         // Present an error message to the user
         
@@ -248,6 +297,14 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     func sessionInterruptionEnded(_ session: ARSession) {
         // Reset tracking and/or remove existing anchors if consistent tracking is required
         
+    }
+    
+    //MARK: - Utils
+    public func exifOrientationFromDeviceOrientation() -> CGImagePropertyOrientation {
+        // override, only works in landscape left for Demo
+        // ORIENT:change this if running in another position
+        // Device oriented horizontally, home button on the left
+        return CGImagePropertyOrientation.down
     }
     
     
@@ -361,6 +418,200 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         boxNode!.position = SCNVector3Make(0.0, 0.0, 0.0)// tweak position over anchor
         
         return boxNode
+    }
+    
+    func random(_ n:Int) -> Int
+    {
+        return Int(arc4random_uniform(UInt32(n)))
+    }
+    
+    
+    //MARK: - Vision YOLO Methods
+    
+    let model = PersonBike()
+    private var requests = [VNRequest]()
+    
+    @discardableResult
+    func setupVision(useCPUOnly:Bool) -> NSError? {
+        // Setup Vision parts
+        let error: NSError! = nil
+        
+        do {
+            
+            //MARK: One, Setup Vision
+            // grabe the model and wrap as a Vision Object
+            let visionModel = try VNCoreMLModel(for: model.model)
+            
+            // use this request to setup the object recognition with Vision
+            let objectRecognition = VNCoreMLRequest(model: visionModel,
+                                                    completionHandler: self.handleObjectRecognitionResult)
+            
+            objectRecognition.imageCropAndScaleOption = .scaleFill
+            objectRecognition.usesCPUOnly = useCPUOnly // ensure we have resources for AR
+            self.requests = [objectRecognition] // recognition requests for the vision model
+            
+        } catch let error as NSError {
+            print("Model loading went wrong: \(error)")
+        }
+        
+        return error
+    }
+    
+    func handleObjectRecognitionResult(_ request:VNRequest, error:Error?){
+        
+        //MARK: Four, Handle Display of Results
+        // perform all the UI updates on the main queue
+        if let results = request.results { // if we have valid results, else its nil
+            DispatchQueue.main.async(execute: {
+                
+
+                // this display code adapted from WWDC 2018, Breakfast Finder App
+                // https://developer.apple.com/documentation/vision/recognizing_objects_in_live_capture
+                self.drawVisionRequestResults(results)
+                self.updateOverlay() // move overlay with screen position
+                
+                // set as nil so we can process next ARFrame Image
+                self.currentBuffer = nil
+            })
+        }
+    }
+    
+    func drawVisionRequestResults(_ results: [Any]) {
+        // this display code adapted from WWDC 2018, Breakfast Finder App
+        // https://developer.apple.com/documentation/vision/recognizing_objects_in_live_capture
+        
+        // now draw everything (halt animation while we update)
+        CATransaction.begin()
+        CATransaction.setValue(kCFBooleanTrue, forKey: kCATransactionDisableActions)
+        
+        // if any other displayed objects existed, delete them
+        detectionOverlay.sublayers = nil // remove all the old recognized objects
+        
+        // for each result, create an overlay layer to display on it
+        for observation in results where observation is VNRecognizedObjectObservation {
+            guard let objectObservation = observation as? VNRecognizedObjectObservation else {
+                continue
+            }
+            // Select only the label with the highest confidence.
+            let topLabelObservation = objectObservation.labels[0]
+            let objectBounds = VNImageRectForNormalizedRect(objectObservation.boundingBox,
+                                                            Int(captureImageSize.width),
+                                                            Int(captureImageSize.height))
+            // get bounding box for object
+            let shapeLayer = self.createRoundedRectLayerWithBounds(objectBounds,
+                                                                   identifier: topLabelObservation.identifier)
+            // show the label and confidence
+            let textLayer = self.createTextSubLayerInBounds(objectBounds,
+                                                            identifier: topLabelObservation.identifier,
+                                                            confidence: topLabelObservation.confidence)
+            shapeLayer.addSublayer(textLayer)// add text to box
+            detectionOverlay.addSublayer(shapeLayer) // add box to the UI
+        }
+        CATransaction.commit() // now commit eveything so that it displays
+    }
+    
+    func createTextSubLayerInBounds(_ bounds: CGRect, identifier: String, confidence: VNConfidence) -> CATextLayer {
+        // this display code adapted from WWDC 2018, Breakfast Finder App
+        // https://developer.apple.com/documentation/vision/recognizing_objects_in_live_capture
+        
+        let textLayer = CATextLayer()
+        textLayer.name = "Object Label"
+        let formattedString = NSMutableAttributedString(string: String(format: "\(identifier)\nConfidence:  %.2f", confidence))
+        let largeFont = UIFont(name: "HelveticaNeue-Light", size: 28.0)!
+        let color = CGColor(colorSpace: CGColorSpaceCreateDeviceRGB(), components: [1.0, 1.0, 1.0, 1.0])!
+        formattedString.addAttributes([NSAttributedString.Key.font: largeFont,
+                                       NSAttributedString.Key.foregroundColor:color],
+                                      range: NSRange(location: 0, length: identifier.count))
+        formattedString.addAttributes([NSAttributedString.Key.foregroundColor:color],
+                                      range: NSRange(location: identifier.count-1, length:19 ))
+        textLayer.string = formattedString
+        
+        textLayer.shadowOpacity = 0.3
+        textLayer.shadowOffset = CGSize(width: 2, height: 2)
+        textLayer.contentsScale = 2.0 // retina rendering
+        // rotate the layer into screen orientation and scale and mirror
+        textLayer.bounds = CGRect(x: 0, y: 0, width: bounds.size.width - 10, height: bounds.size.height - 10)
+        textLayer.position = CGPoint(x: bounds.midX, y: bounds.midY)
+        //textLayer.setAffineTransform(CGAffineTransform(rotationAngle: CGFloat(0.0 / 2.0)).scaledBy(x: 1.0, y: -1.0))
+        return textLayer
+    }
+    
+    func createRoundedRectLayerWithBounds(_ bounds: CGRect, identifier:String) -> CALayer {
+        let shapeLayer = CALayer()
+        
+        shapeLayer.name = "Found Object"
+        shapeLayer.backgroundColor = self.mapColorFrom(identifier)
+        shapeLayer.cornerRadius = 7
+        
+        shapeLayer.bounds = bounds
+        shapeLayer.position = CGPoint(x: bounds.midX, y: bounds.midY)
+        
+        shapeLayer.setAffineTransform(CGAffineTransform(translationX: 0.0, y: 0.0).scaledBy(x: 1.0, y: -1.0))
+        return shapeLayer
+    }
+    
+    func mapColorFrom(_ identifier:String)->CGColor? {
+        
+        var color = CGColor(colorSpace: CGColorSpaceCreateDeviceRGB(), components: [1.0, 0.0, 0.2, 0.2])
+        
+        switch identifier {
+        case "Person":
+            color = CGColor(colorSpace: CGColorSpaceCreateDeviceRGB(),
+                            components: [1.0, 0.0, 0.0, 0.2])
+        case "Bike":
+            color = CGColor(colorSpace: CGColorSpaceCreateDeviceRGB(),
+                            components: [0.0, 1.0, 0.0, 0.2])
+        default:
+            color = CGColor(colorSpace: CGColorSpaceCreateDeviceRGB(),
+                            components: [0.0, 0.0, 1.0, 0.2])
+        }
+        
+        return color
+    }
+    
+    var detectionOverlay:CALayer! = nil
+    var captureImageSize:CGSize! = nil
+    func setupDetectionOverlay() {
+        detectionOverlay = CALayer() // container layer that has all the renderings of the observations
+        detectionOverlay.name = "DetectionOverlay"
+        
+        
+        // check here to understand the scaling with iPhone
+        // something is odd in terms of the bounds checking here
+        detectionOverlay.bounds = CGRect(x: 0.0,
+                                         y: 0.0,
+                                         width: (self.view.bounds.width * 2),
+                                         height: (self.view.bounds.height * 2))
+        detectionOverlay.position = CGPoint(x: (self.view.bounds.midX * 1),
+                                            y: (self.view.bounds.midY * 1))
+        self.sceneView.layer.addSublayer(detectionOverlay)
+    }
+    
+    func updateOverlay() {
+        // this function must be called from the main Queue
+        
+        let bounds = self.view.bounds
+        var scale: CGFloat
+        
+        // phone is flipped so be sure bounds line up with scaling
+        let xScale: CGFloat = bounds.size.width /  captureImageSize.height * 1
+        let yScale: CGFloat = bounds.size.height / captureImageSize.width * 1
+        
+        
+        scale = fmax(xScale, yScale)
+        if scale.isInfinite {
+            scale = 1.0
+        }
+        
+        
+        
+        // rotate the layer into screen orientation and scale and mirror
+        // ORIENT: hard coded for landscape left format
+        detectionOverlay.setAffineTransform(CGAffineTransform(rotationAngle: CGFloat(0 / 2.0)).scaledBy(x: scale, y: -scale))
+        // center the layer
+        detectionOverlay.position = CGPoint (x: bounds.midX, y: bounds.midY)
+        detectionOverlay.setNeedsDisplay() // sets display for all subviews in object dictionary?
+        
     }
     
 }
