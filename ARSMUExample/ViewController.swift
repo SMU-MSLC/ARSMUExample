@@ -75,7 +75,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         let planeNode = SCNNode(geometry:imagePlane)
         sceneView.scene.rootNode.addChildNode(planeNode)
         
-        
         // update the node to be a bit in front of the camera inside the AR session
         
         // step one create a translation transform
