@@ -76,7 +76,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             // this is spawned on background process so that it is not at the expense of
             // the AR Session performance
             guard let self = self else {
-                return // this prevent memory cycles
+                // try to get a weak handle to self, if self still exists
+                return // this prevents memory cycles
             }
                 
             let newImage = self.stylizeImage(cgImage: startImage.cgImage!, model: self.models[idx])
@@ -172,7 +173,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             }
             
 
-            node.runAction(moveAction)
+            node.runAction(SCNAction.repeatForever(moveAction))
         }
         
     }
@@ -528,7 +529,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         textLayer.shadowOpacity = 0.3
         textLayer.shadowOffset = CGSize(width: 2, height: 2)
-        textLayer.contentsScale = 2.0 // retina rendering
+        textLayer.contentsScale = 1.0 // retina rendering
         // rotate the layer into screen orientation and scale and mirror
         textLayer.bounds = CGRect(x: 0, y: 0, width: bounds.size.width - 10, height: bounds.size.height - 10)
         textLayer.position = CGPoint(x: bounds.midX, y: bounds.midY)
@@ -576,14 +577,12 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         detectionOverlay.name = "DetectionOverlay"
         
         
-        // check here to understand the scaling with iPhone
-        // something is odd in terms of the bounds checking here
+        // set the initial bounds, will transform when we know more about the image
         detectionOverlay.bounds = CGRect(x: 0.0,
                                          y: 0.0,
-                                         width: (self.view.bounds.width * 2),
-                                         height: (self.view.bounds.height * 2))
-        detectionOverlay.position = CGPoint(x: (self.view.bounds.midX * 1),
-                                            y: (self.view.bounds.midY * 1))
+                                         width: (self.view.bounds.width * 1),
+                                         height: (self.view.bounds.height * 1))
+
         self.sceneView.layer.addSublayer(detectionOverlay)
     }
     
@@ -594,23 +593,28 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         var scale: CGFloat
         
         // phone is flipped so be sure bounds line up with scaling
-        let xScale: CGFloat = bounds.size.width /  captureImageSize.height * 1
-        let yScale: CGFloat = bounds.size.height / captureImageSize.width * 1
+        let xScale: CGFloat = bounds.size.width /  captureImageSize.width * 1.0
+        let yScale: CGFloat = bounds.size.height / captureImageSize.height * 1.0
         
-        
+        // depending on the size of the image Vision cropped it
+        // according to the larger dimension, so we need to take a
+        // max here to account for that.
+        // NOTE: this is specific to the .scaleFill setting in setupVision
         scale = fmax(xScale, yScale)
-        if scale.isInfinite {
-            scale = 1.0
-        }
-        
-        
         
         // rotate the layer into screen orientation and scale and mirror
         // ORIENT: hard coded for landscape left format
-        detectionOverlay.setAffineTransform(CGAffineTransform(rotationAngle: CGFloat(0 / 2.0)).scaledBy(x: scale, y: -scale))
-        // center the layer
-        detectionOverlay.position = CGPoint (x: bounds.midX, y: bounds.midY)
-        detectionOverlay.setNeedsDisplay() // sets display for all subviews in object dictionary?
+        detectionOverlay.setAffineTransform(
+            CGAffineTransform(scaleX: scale, y: -scale))
+        
+        // this tries to get the best mapping we can from the cropping that
+        // Core Vision used. It may not be 100% perfect
+        
+        // center the layer, after scaling it
+        detectionOverlay.position = CGPoint (x: bounds.midY * 1.0,
+                                             y: bounds.midX * 1.0)
+        
+        detectionOverlay.setNeedsDisplay() // sets display for all subviews in object dictionary
         
     }
     
