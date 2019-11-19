@@ -465,7 +465,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         if let results = request.results { // if we have valid results, else its nil
             DispatchQueue.main.async(execute: {
                 
-
                 // this display code adapted from WWDC 2018, Breakfast Finder App
                 // https://developer.apple.com/documentation/vision/recognizing_objects_in_live_capture
                 self.drawVisionRequestResults(results)
