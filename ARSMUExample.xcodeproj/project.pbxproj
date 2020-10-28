@@ -17,30 +17,11 @@
 		B660134C1FABCF4100E2D809 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B660134B1FABCF4100E2D809 /* ViewController.swift */; };
 		B660134F1FABCF4100E2D809 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B660134D1FABCF4100E2D809 /* Main.storyboard */; };
 		B66013541FABCF4100E2D809 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B66013521FABCF4100E2D809 /* LaunchScreen.storyboard */; };
-		B660135F1FABCF4100E2D809 /* ARSMUExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B660135E1FABCF4100E2D809 /* ARSMUExampleTests.swift */; };
-		B660136A1FABCF4100E2D809 /* ARSMUExampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66013691FABCF4100E2D809 /* ARSMUExampleUITests.swift */; };
 		B66013821FABF43E00E2D809 /* UIImage+scaling.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66013811FABF43E00E2D809 /* UIImage+scaling.swift */; };
 		B6E67067237B6F72003670A3 /* Elephant.arobject in Resources */ = {isa = PBXBuildFile; fileRef = B6E67066237B6F71003670A3 /* Elephant.arobject */; };
 		B6E67069237BA69B003670A3 /* Scan_20-45-50.arobject in Resources */ = {isa = PBXBuildFile; fileRef = B6E67068237BA69B003670A3 /* Scan_20-45-50.arobject */; };
 		B6E6706B237C90AF003670A3 /* Dumbo.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = B6E6706A237C90AF003670A3 /* Dumbo.mp4 */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		B660135B1FABCF4100E2D809 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = B660133C1FABCF4100E2D809 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = B66013431FABCF4100E2D809;
-			remoteInfo = ARSMUExample;
-		};
-		B66013661FABCF4100E2D809 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = B660133C1FABCF4100E2D809 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = B66013431FABCF4100E2D809;
-			remoteInfo = ARSMUExample;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		B6427A801FAC08DB00AF453B /* wave_style.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = wave_style.mlmodel; sourceTree = "<group>"; };
@@ -55,12 +36,6 @@
 		B660134E1FABCF4100E2D809 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B66013531FABCF4100E2D809 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B66013551FABCF4100E2D809 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B660135A1FABCF4100E2D809 /* ARSMUExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ARSMUExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		B660135E1FABCF4100E2D809 /* ARSMUExampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARSMUExampleTests.swift; sourceTree = "<group>"; };
-		B66013601FABCF4100E2D809 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B66013651FABCF4100E2D809 /* ARSMUExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ARSMUExampleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		B66013691FABCF4100E2D809 /* ARSMUExampleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARSMUExampleUITests.swift; sourceTree = "<group>"; };
-		B660136B1FABCF4100E2D809 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B66013811FABF43E00E2D809 /* UIImage+scaling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+scaling.swift"; sourceTree = "<group>"; };
 		B6E67066237B6F71003670A3 /* Elephant.arobject */ = {isa = PBXFileReference; lastKnownFileType = file; path = Elephant.arobject; sourceTree = "<group>"; };
 		B6E67068237BA69B003670A3 /* Scan_20-45-50.arobject */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Scan_20-45-50.arobject"; sourceTree = "<group>"; };
@@ -75,20 +50,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		B66013571FABCF4100E2D809 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		B66013621FABCF4100E2D809 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -96,8 +57,6 @@
 			isa = PBXGroup;
 			children = (
 				B66013461FABCF4100E2D809 /* ARSMUExample */,
-				B660135D1FABCF4100E2D809 /* ARSMUExampleTests */,
-				B66013681FABCF4100E2D809 /* ARSMUExampleUITests */,
 				B66013451FABCF4100E2D809 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -106,8 +65,6 @@
 			isa = PBXGroup;
 			children = (
 				B66013441FABCF4100E2D809 /* ARSMUExample.app */,
-				B660135A1FABCF4100E2D809 /* ARSMUExampleTests.xctest */,
-				B66013651FABCF4100E2D809 /* ARSMUExampleUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -134,24 +91,6 @@
 			path = ARSMUExample;
 			sourceTree = "<group>";
 		};
-		B660135D1FABCF4100E2D809 /* ARSMUExampleTests */ = {
-			isa = PBXGroup;
-			children = (
-				B660135E1FABCF4100E2D809 /* ARSMUExampleTests.swift */,
-				B66013601FABCF4100E2D809 /* Info.plist */,
-			);
-			path = ARSMUExampleTests;
-			sourceTree = "<group>";
-		};
-		B66013681FABCF4100E2D809 /* ARSMUExampleUITests */ = {
-			isa = PBXGroup;
-			children = (
-				B66013691FABCF4100E2D809 /* ARSMUExampleUITests.swift */,
-				B660136B1FABCF4100E2D809 /* Info.plist */,
-			);
-			path = ARSMUExampleUITests;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -172,42 +111,6 @@
 			productReference = B66013441FABCF4100E2D809 /* ARSMUExample.app */;
 			productType = "com.apple.product-type.application";
 		};
-		B66013591FABCF4100E2D809 /* ARSMUExampleTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = B66013711FABCF4100E2D809 /* Build configuration list for PBXNativeTarget "ARSMUExampleTests" */;
-			buildPhases = (
-				B66013561FABCF4100E2D809 /* Sources */,
-				B66013571FABCF4100E2D809 /* Frameworks */,
-				B66013581FABCF4100E2D809 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				B660135C1FABCF4100E2D809 /* PBXTargetDependency */,
-			);
-			name = ARSMUExampleTests;
-			productName = ARSMUExampleTests;
-			productReference = B660135A1FABCF4100E2D809 /* ARSMUExampleTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		B66013641FABCF4100E2D809 /* ARSMUExampleUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = B66013741FABCF4100E2D809 /* Build configuration list for PBXNativeTarget "ARSMUExampleUITests" */;
-			buildPhases = (
-				B66013611FABCF4100E2D809 /* Sources */,
-				B66013621FABCF4100E2D809 /* Frameworks */,
-				B66013631FABCF4100E2D809 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				B66013671FABCF4100E2D809 /* PBXTargetDependency */,
-			);
-			name = ARSMUExampleUITests;
-			productName = ARSMUExampleUITests;
-			productReference = B66013651FABCF4100E2D809 /* ARSMUExampleUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -222,18 +125,6 @@
 						CreatedOnToolsVersion = 9.0.1;
 						LastSwiftMigration = 1120;
 						ProvisioningStyle = Automatic;
-					};
-					B66013591FABCF4100E2D809 = {
-						CreatedOnToolsVersion = 9.0.1;
-						LastSwiftMigration = 1120;
-						ProvisioningStyle = Automatic;
-						TestTargetID = B66013431FABCF4100E2D809;
-					};
-					B66013641FABCF4100E2D809 = {
-						CreatedOnToolsVersion = 9.0.1;
-						LastSwiftMigration = 1120;
-						ProvisioningStyle = Automatic;
-						TestTargetID = B66013431FABCF4100E2D809;
 					};
 				};
 			};
@@ -251,8 +142,6 @@
 			projectRoot = "";
 			targets = (
 				B66013431FABCF4100E2D809 /* ARSMUExample */,
-				B66013591FABCF4100E2D809 /* ARSMUExampleTests */,
-				B66013641FABCF4100E2D809 /* ARSMUExampleUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -269,20 +158,6 @@
 				B6427A8B1FACA94400AF453B /* Assets.xcassets in Resources */,
 				B660134F1FABCF4100E2D809 /* Main.storyboard in Resources */,
 				B6E6706B237C90AF003670A3 /* Dumbo.mp4 in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		B66013581FABCF4100E2D809 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		B66013631FABCF4100E2D809 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -303,36 +178,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		B66013561FABCF4100E2D809 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				B660135F1FABCF4100E2D809 /* ARSMUExampleTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		B66013611FABCF4100E2D809 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				B660136A1FABCF4100E2D809 /* ARSMUExampleUITests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		B660135C1FABCF4100E2D809 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = B66013431FABCF4100E2D809 /* ARSMUExample */;
-			targetProxy = B660135B1FABCF4100E2D809 /* PBXContainerItemProxy */;
-		};
-		B66013671FABCF4100E2D809 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = B66013431FABCF4100E2D809 /* ARSMUExample */;
-			targetProxy = B66013661FABCF4100E2D809 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		B660134D1FABCF4100E2D809 /* Main.storyboard */ = {
@@ -404,7 +250,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -457,7 +303,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -497,72 +343,6 @@
 			};
 			name = Release;
 		};
-		B66013721FABCF4100E2D809 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = APD62CDC25;
-				INFOPLIST_FILE = ARSMUExampleTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = SMU.ARSMUExampleTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ARSMUExample.app/ARSMUExample";
-			};
-			name = Debug;
-		};
-		B66013731FABCF4100E2D809 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = APD62CDC25;
-				INFOPLIST_FILE = ARSMUExampleTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = SMU.ARSMUExampleTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ARSMUExample.app/ARSMUExample";
-			};
-			name = Release;
-		};
-		B66013751FABCF4100E2D809 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = APD62CDC25;
-				INFOPLIST_FILE = ARSMUExampleUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = SMU.ARSMUExampleUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = ARSMUExample;
-			};
-			name = Debug;
-		};
-		B66013761FABCF4100E2D809 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = APD62CDC25;
-				INFOPLIST_FILE = ARSMUExampleUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = SMU.ARSMUExampleUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = ARSMUExample;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -580,24 +360,6 @@
 			buildConfigurations = (
 				B660136F1FABCF4100E2D809 /* Debug */,
 				B66013701FABCF4100E2D809 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		B66013711FABCF4100E2D809 /* Build configuration list for PBXNativeTarget "ARSMUExampleTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				B66013721FABCF4100E2D809 /* Debug */,
-				B66013731FABCF4100E2D809 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		B66013741FABCF4100E2D809 /* Build configuration list for PBXNativeTarget "ARSMUExampleUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				B66013751FABCF4100E2D809 /* Debug */,
-				B66013761FABCF4100E2D809 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
