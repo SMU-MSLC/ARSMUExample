@@ -26,7 +26,9 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     var numArtImages = 0
     
     // Special thanks to SMU students T. Pop, J. Ledford, and L. Wood for these styles!
-    var models = [wave_style().model,mosaic_style().model,udnie_style().model] as [MLModel]
+    var models = [wave_style().model,
+                  mosaic_style().model,
+                  udnie_style().model] as [MLModel]
     
     //MARK: - UI and Lifecycle
     override func viewDidLoad() {
