@@ -21,7 +21,9 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     var lastNode:SCNNode? = nil
     
     // Special thanks to SMU students T. Pop, J. Ledford, and L. Wood for these styles!
-    var models = [wave_style().model,mosaic_style().model,udnie_style().model] as [MLModel]
+    var models = [wave_style().model,
+                  mosaic_style().model,
+                  udnie_style().model] as [MLModel]
     
     override func viewDidLoad() {
         super.viewDidLoad()
