@@ -1,7 +1,7 @@
 {
   "info" : {
-    "version" : 1,
-    "author" : "xcode"
+    "author" : "xcode",
+    "version" : 1
   },
   "resources" : [
     {
@@ -9,6 +9,12 @@
     },
     {
       "filename" : "Elephant2.arobject"
+    },
+    {
+      "filename" : "ElephantToy.arobject"
+    },
+    {
+      "filename" : "Scan_10-37-26.arobject"
     }
   ]
 }
