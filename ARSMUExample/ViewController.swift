@@ -25,14 +25,45 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     var objectNode:SCNNode? = nil
     var numArtImages = 0
     
-    // Special thanks to SMU students T. Pop, J. Ledford, and L. Wood for these styles!
-    var models = [wave_style().model,
-                  mosaic_style().model,
-                  udnie_style().model] as [MLModel]
+    lazy var wave:wave_style = {
+            do{
+                let config = MLModelConfiguration()
+                return try wave_style(configuration: config)
+            }catch{
+                print(error)
+                fatalError("Could not load ML model")
+            }
+        }()
+    
+    lazy var mosaic:mosaic_style = {
+            do{
+                let config = MLModelConfiguration()
+                return try mosaic_style(configuration: config)
+            }catch{
+                print(error)
+                fatalError("Could not load ML model")
+            }
+        }()
+    
+    lazy var udnie:udnie_style = {
+            do{
+                let config = MLModelConfiguration()
+                return try udnie_style(configuration: config)
+            }catch{
+                print(error)
+                fatalError("Could not load ML model")
+            }
+        }()
+    
+    
+    var models:[MLModel] = []
     
     //MARK: - UI and Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Special thanks to SMU students T. Pop, J. Ledford, and L. Wood for these styles!
+        self.models = [wave.model, mosaic.model, udnie.model] as [MLModel]
         
         // Set the view's delegate
         sceneView.delegate = self
@@ -431,7 +462,17 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     //MARK: - Vision YOLO Methods
     
-    let model = PersonBike()
+    //let model = PersonBike()
+    lazy var model:PersonBike = {
+            do{
+                let config = MLModelConfiguration()
+                return try PersonBike(configuration: config)
+            }catch{
+                print(error)
+                fatalError("Could not load ML model")
+            }
+        }()
+    
     private var requests = [VNRequest]()
     
     @discardableResult
@@ -532,6 +573,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         textLayer.shadowOffset = CGSize(width: 2, height: 2)
         textLayer.contentsScale = 1.0 // retina rendering
         // rotate the layer into screen orientation and scale and mirror
+        // offset the text inside the overlay box, use about 10 pixels
         textLayer.bounds = CGRect(x: 0, y: 0, width: bounds.size.width - 10, height: bounds.size.height - 10)
         textLayer.position = CGPoint(x: bounds.midX, y: bounds.midY)
         //textLayer.setAffineTransform(CGAffineTransform(rotationAngle: CGFloat(0.0 / 2.0)).scaledBy(x: 1.0, y: -1.0))
@@ -557,10 +599,10 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         var color = CGColor(colorSpace: CGColorSpaceCreateDeviceRGB(), components: [1.0, 0.0, 0.2, 0.2])
         
         switch identifier {
-        case "Person":
+        case "person":
             color = CGColor(colorSpace: CGColorSpaceCreateDeviceRGB(),
                             components: [1.0, 0.0, 0.0, 0.2])
-        case "Bike":
+        case "bike":
             color = CGColor(colorSpace: CGColorSpaceCreateDeviceRGB(),
                             components: [0.0, 1.0, 0.0, 0.2])
         default:
@@ -605,15 +647,16 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         // rotate the layer into screen orientation and scale and mirror
         // ORIENT: hard coded for landscape left format
-        detectionOverlay.setAffineTransform(
-            CGAffineTransform(scaleX: scale, y: -scale))
+        detectionOverlay.setAffineTransform(CGAffineTransform(scaleX: scale, y: -scale))
         
         // this tries to get the best mapping we can from the cropping that
         // Core Vision used. It may not be 100% perfect
         
         // center the layer, after scaling it
-        detectionOverlay.position = CGPoint (x: bounds.midY * 1.0,
-                                             y: bounds.midX * 1.0)
+        let magicXAdjust:CGFloat = -40.0 // offset for overlay becasue its always a little off
+        let magicYAdjust:CGFloat = 25.0 // can't quite find where the offset is coming from though
+        detectionOverlay.position = CGPoint (x: bounds.midY * 1.0 + magicXAdjust,
+                                             y: bounds.midX * 1.0 + magicYAdjust)
         
         detectionOverlay.setNeedsDisplay() // sets display for all subviews in object dictionary
         
