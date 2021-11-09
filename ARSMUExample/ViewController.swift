@@ -277,7 +277,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     // check to be sure this is the proper delegate function for this.
     var currentBuffer:CVPixelBuffer! = nil
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
-        //MARK: Two, Get Image Frame from AR
+        //MARK: YOLO Two, Get Image Frame from AR
         // get current ARSession frame so that we can get AVSession Image Capture
         guard let frame = sceneView.session.currentFrame else { return }
 
@@ -307,7 +307,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                                                             orientation: exifOrientation,
                                                             options: [:])
             
-            //MARK: Three, Start Vision Request
+            //MARK: YOLO Three, Start Vision Request
             // the handler for this was specified in setupVision
             // when the request is done, we will call handleObjectRecognitionResult
             do {
@@ -482,7 +482,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         do {
             
-            //MARK: One, Setup Vision
+            //MARK: YOLO One, Setup Vision
             // grabe the model and wrap as a Vision Object
             let visionModel = try VNCoreMLModel(for: model.model)
             
@@ -503,7 +503,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     func handleObjectRecognitionResult(_ request:VNRequest, error:Error?){
         
-        //MARK: Four, Handle Display of Results
+        //MARK: YOLO Four, Handle Display of Results
         // perform all the UI updates on the main queue
         if let results = request.results { // if we have valid results, else its nil
             DispatchQueue.main.async(execute: {
@@ -535,6 +535,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             guard let objectObservation = observation as? VNRecognizedObjectObservation else {
                 continue
             }
+            
             // Select only the label with the highest confidence.
             let topLabelObservation = objectObservation.labels[0]
             let objectBounds = VNImageRectForNormalizedRect(objectObservation.boundingBox,
