@@ -36,10 +36,10 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         // Create a new scene
         // distilled from https://www.thingiverse.com/thing:210565/#files 
-        let scene = SCNScene(named: "art.scnassets/peruna.dae")!
+        //let scene = SCNScene(named: "art.scnassets/peruna.dae")!
         
         // Set the scene to the view
-        sceneView.scene = scene
+        //sceneView.scene = scene
         
     }
     
