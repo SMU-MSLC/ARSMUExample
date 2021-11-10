@@ -18,9 +18,8 @@
 		B660134F1FABCF4100E2D809 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B660134D1FABCF4100E2D809 /* Main.storyboard */; };
 		B66013541FABCF4100E2D809 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B66013521FABCF4100E2D809 /* LaunchScreen.storyboard */; };
 		B66013821FABF43E00E2D809 /* UIImage+scaling.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66013811FABF43E00E2D809 /* UIImage+scaling.swift */; };
-		B6E67067237B6F72003670A3 /* Elephant.arobject in Resources */ = {isa = PBXBuildFile; fileRef = B6E67066237B6F71003670A3 /* Elephant.arobject */; };
-		B6E67069237BA69B003670A3 /* Scan_20-45-50.arobject in Resources */ = {isa = PBXBuildFile; fileRef = B6E67068237BA69B003670A3 /* Scan_20-45-50.arobject */; };
 		B6E6706B237C90AF003670A3 /* Dumbo.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = B6E6706A237C90AF003670A3 /* Dumbo.mp4 */; };
+		CCEAB53D273C35F40039C249 /* peruna.scn in Resources */ = {isa = PBXBuildFile; fileRef = CCEAB53C273C35F40039C249 /* peruna.scn */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,9 +36,8 @@
 		B66013531FABCF4100E2D809 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B66013551FABCF4100E2D809 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B66013811FABF43E00E2D809 /* UIImage+scaling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+scaling.swift"; sourceTree = "<group>"; };
-		B6E67066237B6F71003670A3 /* Elephant.arobject */ = {isa = PBXFileReference; lastKnownFileType = file; path = Elephant.arobject; sourceTree = "<group>"; };
-		B6E67068237BA69B003670A3 /* Scan_20-45-50.arobject */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Scan_20-45-50.arobject"; sourceTree = "<group>"; };
 		B6E6706A237C90AF003670A3 /* Dumbo.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Dumbo.mp4; sourceTree = "<group>"; };
+		CCEAB53C273C35F40039C249 /* peruna.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; name = peruna.scn; path = art.scnassets/peruna.scn; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,8 +73,6 @@
 				B6427A801FAC08DB00AF453B /* wave_style.mlmodel */,
 				B6427A821FACA2AC00AF453B /* mosaic_style.mlmodel */,
 				B6427A841FACA2B500AF453B /* udnie_style.mlmodel */,
-				B6E67066237B6F71003670A3 /* Elephant.arobject */,
-				B6E67068237BA69B003670A3 /* Scan_20-45-50.arobject */,
 				B6E6706A237C90AF003670A3 /* Dumbo.mp4 */,
 				B66013471FABCF4100E2D809 /* AppDelegate.swift */,
 				B66013491FABCF4100E2D809 /* art.scnassets */,
@@ -85,6 +81,7 @@
 				B6427A881FACA80A00AF453B /* StyleTransferInput.swift */,
 				B66013811FABF43E00E2D809 /* UIImage+scaling.swift */,
 				B660134D1FABCF4100E2D809 /* Main.storyboard */,
+				CCEAB53C273C35F40039C249 /* peruna.scn */,
 				B66013521FABCF4100E2D809 /* LaunchScreen.storyboard */,
 				B66013551FABCF4100E2D809 /* Info.plist */,
 			);
@@ -151,13 +148,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B6E67069237BA69B003670A3 /* Scan_20-45-50.arobject in Resources */,
 				B660134A1FABCF4100E2D809 /* art.scnassets in Resources */,
-				B6E67067237B6F72003670A3 /* Elephant.arobject in Resources */,
 				B66013541FABCF4100E2D809 /* LaunchScreen.storyboard in Resources */,
 				B6427A8B1FACA94400AF453B /* Assets.xcassets in Resources */,
 				B660134F1FABCF4100E2D809 /* Main.storyboard in Resources */,
 				B6E6706B237C90AF003670A3 /* Dumbo.mp4 in Resources */,
+				CCEAB53D273C35F40039C249 /* peruna.scn in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -318,12 +314,12 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = APD62CDC25;
 				INFOPLIST_FILE = ARSMUExample/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.7;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = SMU.ARSMUExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -334,12 +330,12 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = APD62CDC25;
 				INFOPLIST_FILE = ARSMUExample/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.7;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = SMU.ARSMUExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

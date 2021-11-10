@@ -41,10 +41,10 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         // Create a new scene
         // distilled from https://www.thingiverse.com/thing:210565/#files 
-        let scene = SCNScene(named: "art.scnassets/peruna.dae")!
-        
-        // Set the scene to the view
-        sceneView.scene = scene
+        if let scene = SCNScene(named: "peruna.scn"){
+            // Set the scene to the view
+            sceneView.scene = scene
+        }
         
         label = createTextNode(textString: "Welcome to the Art Gallery!")!
         
@@ -194,45 +194,48 @@ class ViewController: UIViewController, ARSCNViewDelegate {
 
             print(objectAnchor.name! + " found")
             
-            // add some text and action for animating the text
-            let prevScale = label.scale
-            label.scale = SCNVector3(CGFloat(prevScale.x)/3, CGFloat(prevScale.x)/3, CGFloat(prevScale.x)/3)
-            
-            let scaleAction = SCNAction.scale(to: CGFloat(prevScale.x), duration: 2)
-            scaleAction.timingMode = .easeIn
-            
-            node.addChildNode(label)
-            
-            self.label.runAction(scaleAction, forKey: "scaleAction")
-            
-            
-            //==================================================
-            // add a box, translucent, around the object
-            let box = self.createBox()
-            node.addChildNode(box!)
-            
-            let alphaAction = SCNAction.fadeOpacity(to: 0.1, duration: 5)
-            box?.runAction(alphaAction)
-            
-            //==================================================
-            // add in a video near the detected object
-            let contentPlane = SCNPlane(width: CGFloat(0.1), height: CGFloat(0.05))
-            
-            // make into material
-            let avMaterial = SCNMaterial()
-            avMaterial.diffuse.contents = getLoopingAVPlayerFromFile(file:"Dumbo", ext:"mp4")
-            
-            // play on a plane
-            contentPlane.materials = [avMaterial]
-            
-            contentPlane.firstMaterial?.isDoubleSided = true
-            
-            let videoNode = SCNNode()
-            videoNode.position = SCNVector3Make(-0.1, 0.2, 0.0)
-            videoNode.geometry = contentPlane
-            node.addChildNode(videoNode)
-
-            objectNode = node // save for adding to this node later on
+            DispatchQueue.main.async{
+                
+                // add some text and action for animating the text
+                let prevScale = self.label.scale
+                self.label.scale = SCNVector3(CGFloat(prevScale.x)/3, CGFloat(prevScale.x)/3, CGFloat(prevScale.x)/3)
+                
+                let scaleAction = SCNAction.scale(to: CGFloat(prevScale.x), duration: 2)
+                scaleAction.timingMode = .easeIn
+                
+                node.addChildNode(self.label)
+                
+                self.label.runAction(scaleAction, forKey: "scaleAction")
+                
+                
+                //==================================================
+                // add a box, translucent, around the object
+                let box = self.createBox()
+                node.addChildNode(box!)
+                
+                let alphaAction = SCNAction.fadeOpacity(to: 0.1, duration: 5)
+                box?.runAction(alphaAction)
+                
+                //==================================================
+                // add in a video near the detected object
+                let contentPlane = SCNPlane(width: CGFloat(0.1), height: CGFloat(0.05))
+                
+                // make into material
+                let avMaterial = SCNMaterial()
+                avMaterial.diffuse.contents = self.getLoopingAVPlayerFromFile(file:"Dumbo", ext:"mp4")
+                
+                // play on a plane
+                contentPlane.materials = [avMaterial]
+                
+                contentPlane.firstMaterial?.isDoubleSided = true
+                
+                let videoNode = SCNNode()
+                videoNode.position = SCNVector3Make(-0.1, 0.2, 0.0)
+                videoNode.geometry = contentPlane
+                node.addChildNode(videoNode)
+                
+                self.objectNode = node // save for adding to this node later on
+            }
         }
 
     }
