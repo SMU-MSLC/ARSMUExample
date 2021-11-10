@@ -12,7 +12,7 @@ import ARKit
 import Vision
 
 class ViewController: UIViewController, ARSCNViewDelegate {
-
+    
     @IBOutlet var sceneView: ARSCNView!
     
     //MARK: Class Properties
@@ -26,12 +26,44 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     var numArtImages = 0
     
     // Special thanks to SMU students T. Pop, J. Ledford, and L. Wood for these styles!
-    var models = [wave_style().model,
-                  mosaic_style().model,
-                  udnie_style().model] as [MLModel]
+    lazy var wave:wave_style = {
+        do{
+            let config = MLModelConfiguration()
+            return try wave_style(configuration: config)
+        }catch{
+            print(error)
+            fatalError("Could not load ML model")
+        }
+    }()
+    
+    lazy var mosaic:mosaic_style = {
+        do{
+            let config = MLModelConfiguration()
+            return try mosaic_style(configuration: config)
+        }catch{
+            print(error)
+            fatalError("Could not load ML model")
+        }
+    }()
+    
+    lazy var udnie:udnie_style = {
+        do{
+            let config = MLModelConfiguration()
+            return try udnie_style(configuration: config)
+        }catch{
+            print(error)
+            fatalError("Could not load ML model")
+        }
+    }()
+    
+    
+    var models:[MLModel] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Special thanks to SMU students T. Pop, J. Ledford, and L. Wood for these styles!
+        self.models = [wave.model, mosaic.model, udnie.model] as [MLModel]
         
         // Set the view's delegate
         sceneView.delegate = self
@@ -40,7 +72,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         sceneView.showsStatistics = true
         
         // Create a new scene
-        // distilled from https://www.thingiverse.com/thing:210565/#files 
+        // distilled from https://www.thingiverse.com/thing:210565/#files
         if let scene = SCNScene(named: "peruna.scn"){
             // Set the scene to the view
             sceneView.scene = scene
@@ -79,9 +111,9 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             guard let self = self else {
                 return // this prevent memory cycles
             }
-                
+            
             let newImage = self.stylizeImage(cgImage: startImage.cgImage!, model: self.models[idx])
-
+            
             imagePlane.firstMaterial?.diffuse.contents = newImage
             imagePlane.firstMaterial?.lightingModel = .constant
             imagePlane.firstMaterial?.isDoubleSided = true
@@ -148,7 +180,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                 moveAction = SCNAction.moveBy(x: 0.0, y: 0.0, z: 0, duration: 0.25)
             }
             
-
+            
             node.runAction(moveAction)
         }
         
@@ -165,7 +197,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             fatalError("Missing expected asset catalog resources.")
         }
         configuration.detectionObjects = referenceObjects // only one object to detect, which is the engine
-
+        
         // Run the view's session
         sceneView.session.run(configuration)
     }
@@ -178,7 +210,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         sceneView.session.pause()
     }
     
-
+    
     // MARK: - ARSCNViewDelegate
     // Override to create and configure nodes for anchors added to the view's session.
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
@@ -191,7 +223,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         if let objectAnchor = anchor as? ARObjectAnchor {
             if (objectNode != nil) { return } // if we already recognized the object, don't do this again
-
+            
             print(objectAnchor.name! + " found")
             
             DispatchQueue.main.async{
@@ -237,7 +269,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                 self.objectNode = node // save for adding to this node later on
             }
         }
-
+        
     }
     
     func session(_ session: ARSession, didFailWithError error: Error) {
@@ -330,7 +362,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         // https://www.raywenderlich.com/6957-building-a-museum-app-with-arkit-2
         guard let videoURL = Bundle.main.url(forResource: file,
                                              withExtension: ext) else {
-                                                return nil
+            return nil
         }
         
         let avPlayerItem = AVPlayerItem(url: videoURL)
@@ -345,7 +377,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                 queue: nil) { notification in
                     self.avPlayer.seek(to: .zero)
                     self.avPlayer.play()
-            }
+                }
         }else{
             avPlayer = AVPlayer(playerItem: avPlayerItem)
             avPlayer.play()
