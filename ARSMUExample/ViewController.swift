@@ -20,13 +20,44 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     let imageSize = 720
     var lastNode:SCNNode? = nil
     
-    // Special thanks to SMU students T. Pop, J. Ledford, and L. Wood for these styles!
-    var models = [wave_style().model,
-                  mosaic_style().model,
-                  udnie_style().model] as [MLModel]
+    lazy var wave:wave_style = {
+                do{
+                    let config = MLModelConfiguration()
+                    return try wave_style(configuration: config)
+                }catch{
+                    print(error)
+                    fatalError("Could not load ML model")
+                }
+            }()
+        
+        lazy var mosaic:mosaic_style = {
+                do{
+                    let config = MLModelConfiguration()
+                    return try mosaic_style(configuration: config)
+                }catch{
+                    print(error)
+                    fatalError("Could not load ML model")
+                }
+            }()
+        
+        lazy var udnie:udnie_style = {
+                do{
+                    let config = MLModelConfiguration()
+                    return try udnie_style(configuration: config)
+                }catch{
+                    print(error)
+                    fatalError("Could not load ML model")
+                }
+            }()
+        
+        
+    var models:[MLModel] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Special thanks to SMU students T. Pop, J. Ledford, and L. Wood for these styles!
+                self.models = [wave.model, mosaic.model, udnie.model] as [MLModel]
         
         // Set the view's delegate
         sceneView.delegate = self
