@@ -5,16 +5,7 @@
   },
   "resources" : [
     {
-      "filename" : "Elephant.arobject"
-    },
-    {
-      "filename" : "Elephant2.arobject"
-    },
-    {
-      "filename" : "ElephantToy.arobject"
-    },
-    {
-      "filename" : "Scan_10-37-26.arobject"
+      "filename" : "DoubleMergedScan.arobject"
     }
   ]
 }
