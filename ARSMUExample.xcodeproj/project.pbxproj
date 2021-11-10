@@ -13,6 +13,8 @@
 		B660134C1FABCF4100E2D809 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B660134B1FABCF4100E2D809 /* ViewController.swift */; };
 		B660134F1FABCF4100E2D809 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B660134D1FABCF4100E2D809 /* Main.storyboard */; };
 		B66013541FABCF4100E2D809 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B66013521FABCF4100E2D809 /* LaunchScreen.storyboard */; };
+		CCEAB534273C15DE0039C249 /* texture.png in Resources */ = {isa = PBXBuildFile; fileRef = CCEAB532273C15DE0039C249 /* texture.png */; };
+		CCEAB535273C15DE0039C249 /* ship.scn in Resources */ = {isa = PBXBuildFile; fileRef = CCEAB533273C15DE0039C249 /* ship.scn */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,8 @@
 		B660134E1FABCF4100E2D809 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B66013531FABCF4100E2D809 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B66013551FABCF4100E2D809 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CCEAB532273C15DE0039C249 /* texture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = texture.png; path = art.scnassets/texture.png; sourceTree = "<group>"; };
+		CCEAB533273C15DE0039C249 /* ship.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; name = ship.scn; path = art.scnassets/ship.scn; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +66,8 @@
 				B6427A8A1FACA94400AF453B /* Assets.xcassets */,
 				B660134D1FABCF4100E2D809 /* Main.storyboard */,
 				B66013521FABCF4100E2D809 /* LaunchScreen.storyboard */,
+				CCEAB533273C15DE0039C249 /* ship.scn */,
+				CCEAB532273C15DE0039C249 /* texture.png */,
 				B66013551FABCF4100E2D809 /* Info.plist */,
 			);
 			path = ARSMUExample;
@@ -127,7 +133,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CCEAB534273C15DE0039C249 /* texture.png in Resources */,
 				B660134A1FABCF4100E2D809 /* art.scnassets in Resources */,
+				CCEAB535273C15DE0039C249 /* ship.scn in Resources */,
 				B66013541FABCF4100E2D809 /* LaunchScreen.storyboard in Resources */,
 				B6427A8B1FACA94400AF453B /* Assets.xcassets in Resources */,
 				B660134F1FABCF4100E2D809 /* Main.storyboard in Resources */,
