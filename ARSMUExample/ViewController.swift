@@ -33,11 +33,14 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         sceneView.showsStatistics = true
         
         // Create a new scene
-        // distilled from https://www.thingiverse.com/thing:210565/#files 
-        let scene = SCNScene(named: "art.scnassets/peruna.dae")!
-        
-        // Set the scene to the view
-        sceneView.scene = scene
+        // distilled from https://www.thingiverse.com/thing:210565/#files
+        // TODO: something is wrong with the assets cache, so loading directly
+        //let scene = SCNScene(named: "art.scnassets/peruna.dae")!
+        if let scene = SCNScene(named: "peruna.scn"){
+            // Set the scene to the view
+            sceneView.scene = scene
+            print("loaded file for scene")
+        }
         
     }
     
@@ -61,28 +64,32 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         // TODO: spawn this on a separate queue
         //       and then come back to main queue for adding node
         let idx = random(models.count) // choose random style
-        print(idx)
+        
         let startImage = sceneView.snapshot()
-        let newImage = stylizeImage(cgImage: startImage.cgImage!, model: models[idx])
-
-        imagePlane.firstMaterial?.diffuse.contents = newImage
-        imagePlane.firstMaterial?.lightingModel = .constant
-        
-        // add the node to the scene
-        let planeNode = SCNNode(geometry:imagePlane)
-        sceneView.scene.rootNode.addChildNode(planeNode)
-        
-        // save this last node
-        lastNode = planeNode
-        
-        // update the node to be a bit in front of the camera inside the AR session
-        
-        // step one create a translation transform
-        var translation = matrix_identity_float4x4
-        translation.columns.3.z = -0.1
-        
-        // step two, apply translation relative to camera for the node
-        planeNode.simdTransform = matrix_multiply(currentFrame.camera.transform, translation )
+        DispatchQueue.global(qos: .background).async{
+            let newImage = self.stylizeImage(cgImage: startImage.cgImage!, model: self.models[idx])
+            
+            DispatchQueue.main.async{
+                imagePlane.firstMaterial?.diffuse.contents = newImage
+                imagePlane.firstMaterial?.lightingModel = .constant
+                
+                // add the node to the scene
+                let planeNode = SCNNode(geometry:imagePlane)
+                self.sceneView.scene.rootNode.addChildNode(planeNode)
+                
+                // save this last node
+                self.lastNode = planeNode
+                
+                // update the node to be a bit in front of the camera inside the AR session
+                
+                // step one create a translation transform
+                var translation = matrix_identity_float4x4
+                translation.columns.3.z = -0.1
+                
+                // step two, apply translation relative to camera for the node
+                planeNode.simdTransform = matrix_multiply(currentFrame.camera.transform, translation )
+            }
+        }
         
     }
     
@@ -122,10 +129,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         guard let referenceObjects = ARReferenceObject.referenceObjects(inGroupNamed: "gallery", bundle: nil) else {
                     fatalError("Missing expected asset catalog resources.")
                 }
-        configuration.detectionObjects = referenceObjects // only one object to detect, which is the engine
+        configuration.detectionObjects = referenceObjects // look for these
 
-        
-        
         // Run the view's session
         sceneView.session.run(configuration)
     }
