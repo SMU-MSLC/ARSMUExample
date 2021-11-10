@@ -29,12 +29,12 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         sceneView.showsStatistics = true
         
         // Create a new scene
-        // TODO: something is wrong with the assets cache, need to find out 
-        //let scene = SCNScene(named: "art.scnassets/Cube.scn")!
-        //let scene = SCNScene(named: "ship.scn")!
-        
-        // Set the scene to the view
-        //sceneView.scene = scene
+        // TODO: something is wrong with the assets cache, so loading directly
+        //let scene = SCNScene(named: "art.scnassets/ship.scn")!
+        if let scene = SCNScene(named: "ship.scn"){
+            // Set the scene to the view
+            sceneView.scene = scene
+        }
         
     }
     
