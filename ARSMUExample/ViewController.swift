@@ -36,10 +36,14 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         // Create a new scene
         // distilled from https://www.thingiverse.com/thing:210565/#files 
+        // Create a new scene
+        // TODO: something is wrong with the assets cache, so loading directly
         //let scene = SCNScene(named: "art.scnassets/peruna.dae")!
-        
-        // Set the scene to the view
-        //sceneView.scene = scene
+        if let scene = SCNScene(named: "peruna.scn"){
+            // Set the scene to the view
+            sceneView.scene = scene
+            print("loaded file for scene")
+        }
         
     }
     

@@ -18,6 +18,7 @@
 		B660134F1FABCF4100E2D809 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B660134D1FABCF4100E2D809 /* Main.storyboard */; };
 		B66013541FABCF4100E2D809 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B66013521FABCF4100E2D809 /* LaunchScreen.storyboard */; };
 		B66013821FABF43E00E2D809 /* UIImage+scaling.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66013811FABF43E00E2D809 /* UIImage+scaling.swift */; };
+		CCEAB539273C18750039C249 /* peruna.scn in Resources */ = {isa = PBXBuildFile; fileRef = CCEAB538273C18750039C249 /* peruna.scn */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		B66013531FABCF4100E2D809 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B66013551FABCF4100E2D809 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B66013811FABF43E00E2D809 /* UIImage+scaling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+scaling.swift"; sourceTree = "<group>"; };
+		CCEAB538273C18750039C249 /* peruna.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; name = peruna.scn; path = art.scnassets/peruna.scn; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +78,7 @@
 				B6427A881FACA80A00AF453B /* StyleTransferInput.swift */,
 				B66013811FABF43E00E2D809 /* UIImage+scaling.swift */,
 				B660134D1FABCF4100E2D809 /* Main.storyboard */,
+				CCEAB538273C18750039C249 /* peruna.scn */,
 				B66013521FABCF4100E2D809 /* LaunchScreen.storyboard */,
 				B66013551FABCF4100E2D809 /* Info.plist */,
 			);
@@ -146,6 +149,7 @@
 				B66013541FABCF4100E2D809 /* LaunchScreen.storyboard in Resources */,
 				B6427A8B1FACA94400AF453B /* Assets.xcassets in Resources */,
 				B660134F1FABCF4100E2D809 /* Main.storyboard in Resources */,
+				CCEAB539273C18750039C249 /* peruna.scn in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
