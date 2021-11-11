@@ -589,13 +589,16 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         let shapeLayer = CALayer()
         
         shapeLayer.name = "Found Object"
+        // red color for people and green for bikes
         shapeLayer.backgroundColor = self.mapColorFrom(identifier)
         shapeLayer.cornerRadius = 7
         
         shapeLayer.bounds = bounds
         shapeLayer.position = CGPoint(x: bounds.midX, y: bounds.midY)
-        
+        // hard coded for landscape right transform layer
+        // this also fixes the origin position difference in UIKit and Vision
         shapeLayer.setAffineTransform(CGAffineTransform(translationX: 0.0, y: 0.0).scaledBy(x: 1.0, y: -1.0))
+        
         return shapeLayer
     }
     
