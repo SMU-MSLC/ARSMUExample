@@ -286,10 +286,18 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         guard let frame = sceneView.session.currentFrame else { return }
 
         // check to be sure buffer is nil, which means free to process
-        guard self.currentBuffer == nil, case .normal = frame.camera.trackingState else {
-            // drop the frame if we are processing a current image or if AR is suffering tracking
+        guard self.currentBuffer == nil else {
+            // drop the frame if we are processing a current image
             return // just drop the frame
         }
+        
+//        guard case .normal = frame.camera.trackingState else {
+//            // drop the frame  if AR is suffering tracking
+//            print("dropping due to resource constraints")
+//            // this will always make the YOLO detector skipped on older phones...
+//            return // just drop the frame
+//        }
+        
         // Otherwise, let's get the image and analyze it!
         
         // Retain the image buffer for Vision processing.
