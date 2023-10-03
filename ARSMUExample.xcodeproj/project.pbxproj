@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B61007482926C0EF00CDCF27 /* PersonBike2.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = B61007472926C0EF00CDCF27 /* PersonBike2.mlmodel */; };
 		B6427A811FAC08DB00AF453B /* wave_style.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = B6427A801FAC08DB00AF453B /* wave_style.mlmodel */; };
 		B6427A831FACA2AC00AF453B /* mosaic_style.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = B6427A821FACA2AC00AF453B /* mosaic_style.mlmodel */; };
 		B6427A851FACA2B500AF453B /* udnie_style.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = B6427A841FACA2B500AF453B /* udnie_style.mlmodel */; };
@@ -24,6 +25,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B61007472926C0EF00CDCF27 /* PersonBike2.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = PersonBike2.mlmodel; sourceTree = "<group>"; };
 		B6427A801FAC08DB00AF453B /* wave_style.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = wave_style.mlmodel; sourceTree = "<group>"; };
 		B6427A821FACA2AC00AF453B /* mosaic_style.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = mosaic_style.mlmodel; sourceTree = "<group>"; };
 		B6427A841FACA2B500AF453B /* udnie_style.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = udnie_style.mlmodel; sourceTree = "<group>"; };
@@ -76,6 +78,7 @@
 				B6427A821FACA2AC00AF453B /* mosaic_style.mlmodel */,
 				B6427A841FACA2B500AF453B /* udnie_style.mlmodel */,
 				CC79F1E3255C2CB0005F4E92 /* PersonBike.mlmodel */,
+				B61007472926C0EF00CDCF27 /* PersonBike2.mlmodel */,
 				B6E6706A237C90AF003670A3 /* Dumbo.mp4 */,
 				B66013471FABCF4100E2D809 /* AppDelegate.swift */,
 				B66013491FABCF4100E2D809 /* art.scnassets */,
@@ -168,6 +171,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B6427A891FACA80A00AF453B /* StyleTransferInput.swift in Sources */,
+				B61007482926C0EF00CDCF27 /* PersonBike2.mlmodel in Sources */,
 				B660134C1FABCF4100E2D809 /* ViewController.swift in Sources */,
 				B66013481FABCF4100E2D809 /* AppDelegate.swift in Sources */,
 				B6427A831FACA2AC00AF453B /* mosaic_style.mlmodel in Sources */,

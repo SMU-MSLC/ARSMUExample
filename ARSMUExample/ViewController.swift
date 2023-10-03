@@ -475,10 +475,10 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     //MARK: - Vision YOLO Methods
     
     //let model = PersonBike()
-    lazy var model:PersonBike = {
+    lazy var model:PersonBike2 = {
             do{
                 let config = MLModelConfiguration()
-                return try PersonBike(configuration: config)
+                return try PersonBike2(configuration: config)
             }catch{
                 print(error)
                 fatalError("Could not load ML model")
