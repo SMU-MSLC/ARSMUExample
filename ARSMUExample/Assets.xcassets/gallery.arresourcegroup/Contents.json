@@ -6,6 +6,9 @@
   "resources" : [
     {
       "filename" : "DoubleMergedScan.arobject"
+    },
+    {
+      "filename" : "Whistle.arobject"
     }
   ]
 }

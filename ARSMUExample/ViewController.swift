@@ -204,7 +204,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
         
         if let objectAnchor = anchor as? ARObjectAnchor {
-            print("Elephant Found!!", node)
+            print("Object Found!!", objectAnchor.name!)
         }
     }
     
