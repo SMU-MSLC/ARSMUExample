@@ -1,0 +1,21 @@
+{
+  "MLModelVersionStringKey" : "2",
+  "MLModelDescriptionKey" : "Object detector created by Turi Create (version 6.4.1)",
+  "MLModelCreatorDefinedKey" : {
+    "version" : "1",
+    "classes" : "bike,person",
+    "training_iterations" : "10000",
+    "com.github.apple.turicreate.version" : "6.4.1",
+    "com.github.apple.os.platform" : "macOS-10.16-x86_64-i386-64bit",
+    "feature" : "image",
+    "include_non_maximum_suppression" : "True",
+    "type" : "object_detector",
+    "iou_threshold" : "0",
+    "confidence_threshold" : "0",
+    "annotations" : "annotations",
+    "max_iterations" : "10000",
+    "model" : "YOLOv2"
+  },
+  "MLModelAuthorKey" : "Eric Larson",
+  "MLModelLicenseKey" : "None"
+}

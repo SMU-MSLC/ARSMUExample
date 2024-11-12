@@ -11,7 +11,7 @@ import SceneKit
 import ARKit
 import Vision
 
-class ViewController: UIViewController, ARSCNViewDelegate {
+class ViewController: UIViewController {
 
     @IBOutlet var sceneView: ARSCNView!
     
@@ -23,7 +23,13 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     var label = SCNNode()
     var objectFound = false
     var objectNode:SCNNode? = nil
+    var avPlayer:AVPlayer! = nil
     var numArtImages = 0
+    
+    var detectionOverlay:CALayer! = nil
+    var captureImageSize:CGSize! = nil
+    
+    var currentBuffer:CVPixelBuffer! = nil
     
     lazy var wave:wave_style = {
             do{
@@ -58,6 +64,18 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     var models:[MLModel] = []
     
+    lazy var model:PersonBike2 = {
+            do{
+                let config = MLModelConfiguration()
+                return try PersonBike2(configuration: config)
+            }catch{
+                print(error)
+                fatalError("Could not load ML model")
+            }
+        }()
+    
+    private var requests = [VNRequest]()
+    
     //MARK: - UI and Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -83,7 +101,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         label = createTextNode(textString: "Welcome to the Art Gallery!")!
         
         setupDetectionOverlay()
-        setupVision(useCPUOnly:false) // set to use GPU, if FPS is a problem, change to true.
+        setupVision() // set to use GPU, if FPS is a problem, change to true.
         
     }
     
@@ -133,7 +151,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             // To update the UI, we should now change to main thread
             DispatchQueue.main.async{
                 if let object=self.objectNode{
-                    // add node in relation to other node
+                    // add node in relation to ARDetected Object
                     // keep tweaking position along the "art" walls
                     // so that the images appear in rows
                     let imagesPerRow:Int = 6
@@ -215,8 +233,139 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     
     
+    
+    
+    
+    
+}
 
-    // MARK: - ARSCNViewDelegate
+
+//MARK: YOLO Extension Methods
+extension ViewController{
+    
+    @discardableResult
+    func setupVision() -> NSError? {
+        // Setup Vision parts
+        let error: NSError! = nil
+        
+        do {
+            
+            //MARK: YOLO One, Setup Vision
+            // grab the model and wrap as a Vision Object
+            let visionModel = try VNCoreMLModel(for: model.model)
+            
+            // use this request to setup the object recognition with Vision
+            let objectRecognition = VNCoreMLRequest(model: visionModel,
+                                                    completionHandler: self.handleObjectRecognitionResult)
+            
+            objectRecognition.imageCropAndScaleOption = .scaleFill
+            self.requests = [objectRecognition] // recognition requests for the vision model
+            
+        } catch let error as NSError {
+            print("Model loading went wrong: \(error)")
+        }
+        
+        return error
+    }
+    
+    
+    // AR delegate where we run our image model on video frame
+    // check to be sure this is the proper delegate function for this.
+    func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
+        //MARK: YOLO Two, Get Image Frame from AR
+        // get current ARSession frame so that we can get AVSession Image Capture
+        guard let frame = sceneView.session.currentFrame else { return }
+
+        // check to be sure buffer is nil, which means free to process
+        guard self.currentBuffer == nil else {
+            // drop the frame if we are processing a current image
+            return // just drop the frame
+        }
+        
+//        guard case .normal = frame.camera.trackingState else {
+//            // drop the frame  if AR is suffering tracking
+//            print("dropping due to resource constraints")
+//            // this will always make the YOLO detector skipped on older phones...
+//            return // just drop the frame
+//        }
+        
+        // Otherwise, let's get the image and analyze it!
+        
+        // Retain the image buffer for Vision processing.
+        self.currentBuffer = frame.capturedImage // the pixels to process
+        self.captureImageSize = frame.camera.imageResolution // needed for displaying overlays
+        
+        // get phone orientation (currently only supports lanscape left)
+        let exifOrientation = self.exifOrientationFromDeviceOrientation()
+        
+        // run in the background so that AR doesn't suffer performance
+        // this delegate function is called at nearly 60 FPS
+        DispatchQueue.global(qos: .background).async { [weak self] in
+            guard let self = self else {
+                return // this prevents memory cycles
+            }
+            
+            // generate a request to analyze the image for objects
+            let imageRequestHandler = VNImageRequestHandler(cvPixelBuffer: self.currentBuffer,
+                                                            orientation: exifOrientation,
+                                                            options: [:])
+            
+            //MARK: YOLO Three, Start Vision Request
+            // the handler for this was specified in setupVision
+            // when the request is done, we will call handleObjectRecognitionResult
+            do {
+                try imageRequestHandler.perform(self.requests)
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
+    
+    
+    
+    func handleObjectRecognitionResult(_ request:VNRequest, error:Error?){
+        
+        //MARK: YOLO Four, Handle Display of Results
+        // perform all the UI updates on the main queue
+        if let results = request.results { // if we have valid results, else its nil
+            DispatchQueue.main.async(execute: {
+                
+                // this display code adapted from WWDC 2018, Breakfast Finder App
+                // https://developer.apple.com/documentation/vision/recognizing_objects_in_live_capture
+                self.drawVisionRequestResults(results)
+                self.updateOverlay() // move overlay with screen position
+                
+                // set as nil so we can process next ARFrame Image
+                self.currentBuffer = nil
+            })
+        }
+    }
+    
+}
+
+
+
+//MARK: ARKit Object Finding and Adding SCN Elements
+extension ViewController: ARSCNViewDelegate {
+    
+    // ARSCNViewDelegate Functions
+    
+    func session(_ session: ARSession, didFailWithError error: Error) {
+        // Present an error message to the user
+        
+    }
+    
+    func sessionWasInterrupted(_ session: ARSession) {
+        // Inform the user that the session has been interrupted, for example, by presenting an overlay
+        
+    }
+    
+    func sessionInterruptionEnded(_ session: ARSession) {
+        // Reset tracking and/or remove existing anchors if consistent tracking is required
+        
+    }
+    
     // Override to create and configure nodes for anchors added to the view's session.
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
         
@@ -276,84 +425,79 @@ class ViewController: UIViewController, ARSCNViewDelegate {
 
     }
     
+    func createTextNode(textString: String)->SCNNode?{
+        
+        let textNode:SCNNode? = SCNNode()
+        textNode!.geometry = setupTextParameters(textString: textString) // make this node text
+        textNode!.scale = SCNVector3Make(0.001, 0.001, 0.001)
+        textNode!.position = SCNVector3Make(-0.1, 0.1, 0.0)// tweak position over anchor
+        textNode!.eulerAngles.y = 0
+        textNode?.castsShadow = true
+        
+        
+        return textNode
+    }
     
-    // AR delegate where we run our image model on video frame
-    // check to be sure this is the proper delegate function for this.
-    var currentBuffer:CVPixelBuffer! = nil
-    func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
-        //MARK: YOLO Two, Get Image Frame from AR
-        // get current ARSession frame so that we can get AVSession Image Capture
-        guard let frame = sceneView.session.currentFrame else { return }
+    func setupTextParameters(textString: String)->SCNText{
+        let text = SCNText(string: textString, extrusionDepth: 1)
+        
+        let material = SCNMaterial()
+        material.diffuse.contents = UIColor.white
+        
+        text.flatness = 0
+        text.isWrapped = true
+        text.materials = [material]
+        return text
+    }
+    
+    
+    func getLoopingAVPlayerFromFile(file:String, ext:String)->AVPlayer?{
+        // https://www.raywenderlich.com/6957-building-a-museum-app-with-arkit-2
+        guard let videoURL = Bundle.main.url(forResource: file,
+                                             withExtension: ext) else {
+                                                return nil
+        }
+        
+        let avPlayerItem = AVPlayerItem(url: videoURL)
+        if avPlayer==nil{
+            avPlayer = AVPlayer(playerItem: avPlayerItem)
+            avPlayer.play()
+            
+            // replay
+            NotificationCenter.default.addObserver(
+                forName: .AVPlayerItemDidPlayToEndTime,
+                object: nil,
+                queue: nil) { notification in
+                    self.avPlayer.seek(to: .zero)
+                    self.avPlayer.play()
+            }
+        }else{
+            avPlayer = AVPlayer(playerItem: avPlayerItem)
+            avPlayer.play()
+        }
+        
+        
+        return avPlayer
+    }
+    
+    func createBox()->SCNNode?{
+        let boxNode:SCNNode? = SCNNode()
+        
+        let box = SCNBox(width: CGFloat(0.1), height: CGFloat(0.1), length: CGFloat(0.1), chamferRadius: 0.01)
+        box.firstMaterial?.diffuse.contents = UIColor(white: 1.0, alpha: 0.8)
+        box.firstMaterial?.isDoubleSided = true
+        
+        boxNode!.geometry = box // make this node a box!
+        boxNode!.position = SCNVector3Make(0.0, 0.0, 0.0)// tweak position over anchor
+        
+        return boxNode
+    }
+    
+    
+}
 
-        // check to be sure buffer is nil, which means free to process
-        guard self.currentBuffer == nil else {
-            // drop the frame if we are processing a current image
-            return // just drop the frame
-        }
-        
-//        guard case .normal = frame.camera.trackingState else {
-//            // drop the frame  if AR is suffering tracking
-//            print("dropping due to resource constraints")
-//            // this will always make the YOLO detector skipped on older phones...
-//            return // just drop the frame
-//        }
-        
-        // Otherwise, let's get the image and analyze it!
-        
-        // Retain the image buffer for Vision processing.
-        self.currentBuffer = frame.capturedImage // the pixels to process
-        self.captureImageSize = frame.camera.imageResolution // needed for displaying overlays
-        
-        // get phone orientation (currently only supports lanscape left)
-        let exifOrientation = self.exifOrientationFromDeviceOrientation()
-        
-        // run in the background so that AR doesn't suffer performance
-        // this delegate function is called at nearly 60 FPS
-        DispatchQueue.global(qos: .background).async { [weak self] in
-            guard let self = self else {
-                return // this prevents memory cycles
-            }
-            
-            // generate a request to analyze the image for objects
-            let imageRequestHandler = VNImageRequestHandler(cvPixelBuffer: self.currentBuffer,
-                                                            orientation: exifOrientation,
-                                                            options: [:])
-            
-            //MARK: YOLO Three, Start Vision Request
-            // the handler for this was specified in setupVision
-            // when the request is done, we will call handleObjectRecognitionResult
-            do {
-                try imageRequestHandler.perform(self.requests)
-            } catch {
-                print(error)
-            }
-        }
-    }
-    
-    func session(_ session: ARSession, didFailWithError error: Error) {
-        // Present an error message to the user
-        
-    }
-    
-    func sessionWasInterrupted(_ session: ARSession) {
-        // Inform the user that the session has been interrupted, for example, by presenting an overlay
-        
-    }
-    
-    func sessionInterruptionEnded(_ session: ARSession) {
-        // Reset tracking and/or remove existing anchors if consistent tracking is required
-        
-    }
-    
-    //MARK: - Utils
-    public func exifOrientationFromDeviceOrientation() -> CGImagePropertyOrientation {
-        // override, only works in landscape left for Demo
-        // ORIENT:change this if running in another position
-        // Device oriented horizontally, home button on the left
-        return CGImagePropertyOrientation.down
-    }
-    
-    
+// MARK: Machine Learning Stylize Code and Utility
+extension ViewController{
     // code from fast style transfer example in iOS app
     // https://github.com/prisma-ai/torch2coreml/tree/master/example/fast-neural-style/ios
     private func stylizeImage(cgImage: CGImage, model: MLModel) -> CGImage {
@@ -398,139 +542,22 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         return pixelBuffer!
     }
     
-    func createTextNode(textString: String)->SCNNode?{
-        
-        let textNode:SCNNode? = SCNNode()
-        textNode!.geometry = setupTextParameters(textString: textString) // make this node text
-        textNode!.scale = SCNVector3Make(0.001, 0.001, 0.001)
-        textNode!.position = SCNVector3Make(-0.1, 0.1, 0.0)// tweak position over anchor
-        textNode!.eulerAngles.y = 0
-        textNode?.castsShadow = true
-        
-        
-        return textNode
-    }
-    
-    func setupTextParameters(textString: String)->SCNText{
-        let text = SCNText(string: textString, extrusionDepth: 1)
-        
-        let material = SCNMaterial()
-        material.diffuse.contents = UIColor.white
-        
-        text.flatness = 0
-        text.isWrapped = true
-        text.materials = [material]
-        return text
-    }
-    
-    var avPlayer:AVPlayer! = nil
-    func getLoopingAVPlayerFromFile(file:String, ext:String)->AVPlayer?{
-        // https://www.raywenderlich.com/6957-building-a-museum-app-with-arkit-2
-        guard let videoURL = Bundle.main.url(forResource: file,
-                                             withExtension: ext) else {
-                                                return nil
-        }
-        
-        let avPlayerItem = AVPlayerItem(url: videoURL)
-        if avPlayer==nil{
-            avPlayer = AVPlayer(playerItem: avPlayerItem)
-            avPlayer.play()
-            
-            // replay
-            NotificationCenter.default.addObserver(
-                forName: .AVPlayerItemDidPlayToEndTime,
-                object: nil,
-                queue: nil) { notification in
-                    self.avPlayer.seek(to: .zero)
-                    self.avPlayer.play()
-            }
-        }else{
-            avPlayer = AVPlayer(playerItem: avPlayerItem)
-            avPlayer.play()
-        }
-        
-        
-        return avPlayer
-    }
-    
-    func createBox()->SCNNode?{
-        let boxNode:SCNNode? = SCNNode()
-        
-        let box = SCNBox(width: CGFloat(0.1), height: CGFloat(0.1), length: CGFloat(0.1), chamferRadius: 0.01)
-        box.firstMaterial?.diffuse.contents = UIColor(white: 1.0, alpha: 0.8)
-        box.firstMaterial?.isDoubleSided = true
-        
-        boxNode!.geometry = box // make this node a box!
-        boxNode!.position = SCNVector3Make(0.0, 0.0, 0.0)// tweak position over anchor
-        
-        return boxNode
-    }
-    
     func random(_ n:Int) -> Int
     {
         return Int(arc4random_uniform(UInt32(n)))
     }
     
-    
-    //MARK: - Vision YOLO Methods
-    
-    //let model = PersonBike()
-    lazy var model:PersonBike2 = {
-            do{
-                let config = MLModelConfiguration()
-                return try PersonBike2(configuration: config)
-            }catch{
-                print(error)
-                fatalError("Could not load ML model")
-            }
-        }()
-    
-    private var requests = [VNRequest]()
-    
-    @discardableResult
-    func setupVision(useCPUOnly:Bool) -> NSError? {
-        // Setup Vision parts
-        let error: NSError! = nil
-        
-        do {
-            
-            //MARK: YOLO One, Setup Vision
-            // grabe the model and wrap as a Vision Object
-            let visionModel = try VNCoreMLModel(for: model.model)
-            
-            // use this request to setup the object recognition with Vision
-            let objectRecognition = VNCoreMLRequest(model: visionModel,
-                                                    completionHandler: self.handleObjectRecognitionResult)
-            
-            objectRecognition.imageCropAndScaleOption = .scaleFill
-            objectRecognition.usesCPUOnly = useCPUOnly // ensure we have resources for AR
-            self.requests = [objectRecognition] // recognition requests for the vision model
-            
-        } catch let error as NSError {
-            print("Model loading went wrong: \(error)")
-        }
-        
-        return error
+    public func exifOrientationFromDeviceOrientation() -> CGImagePropertyOrientation {
+        // override, only works in landscape left for Demo
+        // ORIENT:change this if running in another position
+        // Device oriented horizontally, home button on the left
+        return CGImagePropertyOrientation.down
     }
-    
-    func handleObjectRecognitionResult(_ request:VNRequest, error:Error?){
-        
-        //MARK: YOLO Four, Handle Display of Results
-        // perform all the UI updates on the main queue
-        if let results = request.results { // if we have valid results, else its nil
-            DispatchQueue.main.async(execute: {
-                
-                // this display code adapted from WWDC 2018, Breakfast Finder App
-                // https://developer.apple.com/documentation/vision/recognizing_objects_in_live_capture
-                self.drawVisionRequestResults(results)
-                self.updateOverlay() // move overlay with screen position
-                
-                // set as nil so we can process next ARFrame Image
-                self.currentBuffer = nil
-            })
-        }
-    }
-    
+}
+
+
+//MARK: Core Animation Overlays
+extension ViewController{
     func drawVisionRequestResults(_ results: [Any]) {
         // this display code adapted from WWDC 2018, Breakfast Finder App
         // https://developer.apple.com/documentation/vision/recognizing_objects_in_live_capture
@@ -620,17 +647,16 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                             components: [1.0, 0.0, 0.0, 0.2])
         case "bike":
             color = CGColor(colorSpace: CGColorSpaceCreateDeviceRGB(),
-                            components: [0.0, 1.0, 0.0, 0.2])
+                            components: [0.0, 0.0, 1.0, 0.2])
         default:
             color = CGColor(colorSpace: CGColorSpaceCreateDeviceRGB(),
-                            components: [0.0, 0.0, 1.0, 0.2])
+                            components: [0.1, 0.1, 0.1, 0.2])
         }
         
         return color
     }
     
-    var detectionOverlay:CALayer! = nil
-    var captureImageSize:CGSize! = nil
+    
     func setupDetectionOverlay() {
         detectionOverlay = CALayer() // container layer that has all the renderings of the observations
         detectionOverlay.name = "DetectionOverlay"
@@ -669,16 +695,13 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         // Core Vision used. It may not be 100% perfect
         
         // center the layer, after scaling it
-        let magicXAdjust:CGFloat = -40.0 // offset for overlay becasue its always a little off
-        let magicYAdjust:CGFloat = 25.0 // can't quite find where the offset is coming from though
+        // 2024: Apple Updated the detector to not need these magic numbers!
+        let magicXAdjust:CGFloat = 0.0//-40.0 // offset for overlay becasue its always a little off
+        let magicYAdjust:CGFloat = 0.0//25.0 // can't quite find where the offset is coming from though
         detectionOverlay.position = CGPoint (x: bounds.midY * 1.0 + magicXAdjust,
                                              y: bounds.midX * 1.0 + magicYAdjust)
         
         detectionOverlay.setNeedsDisplay() // sets display for all subviews in object dictionary
         
     }
-    
 }
-
-
-

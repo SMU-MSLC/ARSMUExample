@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B61007482926C0EF00CDCF27 /* PersonBike2.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = B61007472926C0EF00CDCF27 /* PersonBike2.mlmodel */; };
 		B6427A811FAC08DB00AF453B /* wave_style.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = B6427A801FAC08DB00AF453B /* wave_style.mlmodel */; };
 		B6427A831FACA2AC00AF453B /* mosaic_style.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = B6427A821FACA2AC00AF453B /* mosaic_style.mlmodel */; };
 		B6427A851FACA2B500AF453B /* udnie_style.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = B6427A841FACA2B500AF453B /* udnie_style.mlmodel */; };
@@ -19,13 +18,13 @@
 		B660134F1FABCF4100E2D809 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B660134D1FABCF4100E2D809 /* Main.storyboard */; };
 		B66013541FABCF4100E2D809 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B66013521FABCF4100E2D809 /* LaunchScreen.storyboard */; };
 		B66013821FABF43E00E2D809 /* UIImage+scaling.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66013811FABF43E00E2D809 /* UIImage+scaling.swift */; };
+		B67340C42CE3B0A700B13F2D /* PersonBike2.mlpackage in Sources */ = {isa = PBXBuildFile; fileRef = B67340C32CE3B0A700B13F2D /* PersonBike2.mlpackage */; };
 		B6E6706B237C90AF003670A3 /* Dumbo.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = B6E6706A237C90AF003670A3 /* Dumbo.mp4 */; };
 		CC79F1E4255C2CB0005F4E92 /* PersonBike.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = CC79F1E3255C2CB0005F4E92 /* PersonBike.mlmodel */; };
 		CCEAB53F273C3B0A0039C249 /* peruna.scn in Resources */ = {isa = PBXBuildFile; fileRef = CCEAB53E273C3B0A0039C249 /* peruna.scn */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		B61007472926C0EF00CDCF27 /* PersonBike2.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = PersonBike2.mlmodel; sourceTree = "<group>"; };
 		B6427A801FAC08DB00AF453B /* wave_style.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = wave_style.mlmodel; sourceTree = "<group>"; };
 		B6427A821FACA2AC00AF453B /* mosaic_style.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = mosaic_style.mlmodel; sourceTree = "<group>"; };
 		B6427A841FACA2B500AF453B /* udnie_style.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = udnie_style.mlmodel; sourceTree = "<group>"; };
@@ -39,6 +38,7 @@
 		B66013531FABCF4100E2D809 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B66013551FABCF4100E2D809 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B66013811FABF43E00E2D809 /* UIImage+scaling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+scaling.swift"; sourceTree = "<group>"; };
+		B67340C32CE3B0A700B13F2D /* PersonBike2.mlpackage */ = {isa = PBXFileReference; lastKnownFileType = folder.mlpackage; path = PersonBike2.mlpackage; sourceTree = "<group>"; };
 		B6E6706A237C90AF003670A3 /* Dumbo.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Dumbo.mp4; sourceTree = "<group>"; };
 		CC79F1E3255C2CB0005F4E92 /* PersonBike.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; name = PersonBike.mlmodel; path = ../../Turi/PersonBike.mlmodel; sourceTree = "<group>"; };
 		CCEAB53E273C3B0A0039C249 /* peruna.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; name = peruna.scn; path = art.scnassets/peruna.scn; sourceTree = "<group>"; };
@@ -78,7 +78,7 @@
 				B6427A821FACA2AC00AF453B /* mosaic_style.mlmodel */,
 				B6427A841FACA2B500AF453B /* udnie_style.mlmodel */,
 				CC79F1E3255C2CB0005F4E92 /* PersonBike.mlmodel */,
-				B61007472926C0EF00CDCF27 /* PersonBike2.mlmodel */,
+				B67340C32CE3B0A700B13F2D /* PersonBike2.mlpackage */,
 				B6E6706A237C90AF003670A3 /* Dumbo.mp4 */,
 				B66013471FABCF4100E2D809 /* AppDelegate.swift */,
 				B66013491FABCF4100E2D809 /* art.scnassets */,
@@ -172,13 +172,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				B6427A891FACA80A00AF453B /* StyleTransferInput.swift in Sources */,
-				B61007482926C0EF00CDCF27 /* PersonBike2.mlmodel in Sources */,
 				B660134C1FABCF4100E2D809 /* ViewController.swift in Sources */,
 				B66013481FABCF4100E2D809 /* AppDelegate.swift in Sources */,
 				B6427A831FACA2AC00AF453B /* mosaic_style.mlmodel in Sources */,
 				CC79F1E4255C2CB0005F4E92 /* PersonBike.mlmodel in Sources */,
 				B6427A811FAC08DB00AF453B /* wave_style.mlmodel in Sources */,
 				B66013821FABF43E00E2D809 /* UIImage+scaling.swift in Sources */,
+				B67340C42CE3B0A700B13F2D /* PersonBike2.mlpackage in Sources */,
 				B6427A851FACA2B500AF453B /* udnie_style.mlmodel in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -328,13 +328,17 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = APD62CDC25;
 				INFOPLIST_FILE = ARSMUExample/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.7;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = SMU.ARSMUExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -347,13 +351,17 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = APD62CDC25;
 				INFOPLIST_FILE = ARSMUExample/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.7;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = SMU.ARSMUExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};

@@ -1,0 +1,24 @@
+{
+    "fileFormatVersion": "1.0.0",
+    "itemInfoEntries": {
+        "158C1996-387D-41CC-BD6C-972BDEAB06D5": {
+            "author": "com.apple.CoreML",
+            "description": "External FeatureDescription Overlay",
+            "name": "FeatureDescriptions.json",
+            "path": "com.apple.CoreML/FeatureDescriptions.json"
+        },
+        "6BBD3A51-46A2-47CE-9132-A0C29ADBA6A7": {
+            "author": "com.apple.CoreML",
+            "description": "External Metadata Overlay",
+            "name": "Metadata.json",
+            "path": "com.apple.CoreML/Metadata.json"
+        },
+        "F1DC71D7-B23D-48D3-BB85-1370CC44801F": {
+            "author": "com.apple.CoreML",
+            "description": "CoreML Model Specification",
+            "name": "PersonBike2.mlmodel",
+            "path": "com.apple.CoreML/PersonBike2.mlmodel"
+        }
+    },
+    "rootModelIdentifier": "F1DC71D7-B23D-48D3-BB85-1370CC44801F"
+}
