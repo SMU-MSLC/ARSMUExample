@@ -11,12 +11,12 @@ import SceneKit
 import ARKit
 import Vision
 
-class ViewController: UIViewController, ARSCNViewDelegate {
-    
-    @IBOutlet var sceneView: ARSCNView!
+class ViewController: UIViewController {
     
     //MARK: Class Properties
+    @IBOutlet var sceneView: ARSCNView!
     
+
     let imageSize = 720
     var lastNode:SCNNode? = nil
     
@@ -24,6 +24,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     var objectFound = false
     var objectNode:SCNNode? = nil
     var numArtImages = 0
+    var avPlayer:AVPlayer! = nil
     
     // Special thanks to SMU students T. Pop, J. Ledford, and L. Wood for these styles!
     lazy var wave:wave_style = {
@@ -59,6 +60,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     var models:[MLModel] = []
     
+    //MARK: View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -82,11 +84,32 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
     }
     
-    func random(_ n:Int) -> Int
-    {
-        return Int(arc4random_uniform(UInt32(n)))
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // Create a session configuration
+        let configuration = ARWorldTrackingConfiguration()
+        
+        // here is where we setup detection of 3D point clouds, drag into AR assests
+        guard let referenceObjects = ARReferenceObject.referenceObjects(inGroupNamed: "gallery", bundle: nil) else {
+            fatalError("Missing expected asset catalog resources.")
+        }
+        configuration.detectionObjects = referenceObjects // only one object to detect, which is the engine
+        
+        // Run the view's session
+        sceneView.session.run(configuration)
     }
     
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        // Pause the view's session
+        sceneView.session.pause()
+    }
+  
+    
+    //MARK: User Interactions
     @IBAction func handleTap(_ sender: UITapGestureRecognizer) {
         
         // grab the current AR session frame from the scene, if possible
@@ -186,32 +209,14 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        // Create a session configuration
-        let configuration = ARWorldTrackingConfiguration()
-        
-        // here is where we setup detection of 3D point clouds, drag into AR assests
-        guard let referenceObjects = ARReferenceObject.referenceObjects(inGroupNamed: "gallery", bundle: nil) else {
-            fatalError("Missing expected asset catalog resources.")
-        }
-        configuration.detectionObjects = referenceObjects // only one object to detect, which is the engine
-        
-        // Run the view's session
-        sceneView.session.run(configuration)
-    }
+   
     
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        // Pause the view's session
-        sceneView.session.pause()
-    }
-    
-    
-    // MARK: - ARSCNViewDelegate
+}
+
+
+//MARK: AR Delegate Methods
+extension ViewController: ARSCNViewDelegate{
+    // ARSCNViewDelegate
     // Override to create and configure nodes for anchors added to the view's session.
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
         
@@ -287,7 +292,78 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
     }
     
+    //MARK: SCN Node Creation
+    func createTextNode(textString: String)->SCNNode?{
+        
+        let textNode:SCNNode? = SCNNode()
+        textNode!.geometry = setupTextParameters(textString: textString) // make this node text
+        textNode!.scale = SCNVector3Make(0.001, 0.001, 0.001)
+        textNode!.position = SCNVector3Make(-0.1, 0.1, 0.0)// tweak position over anchor
+        textNode!.eulerAngles.y = 0
+        textNode?.castsShadow = true
+        
+        
+        return textNode
+    }
     
+    func setupTextParameters(textString: String)->SCNText{
+        let text = SCNText(string: textString, extrusionDepth: 1)
+        
+        let material = SCNMaterial()
+        material.diffuse.contents = UIColor.white
+        
+        text.flatness = 0
+        text.isWrapped = true
+        text.materials = [material]
+        return text
+    }
+    
+    
+    func getLoopingAVPlayerFromFile(file:String, ext:String)->AVPlayer?{
+        // https://www.raywenderlich.com/6957-building-a-museum-app-with-arkit-2
+        guard let videoURL = Bundle.main.url(forResource: file,
+                                             withExtension: ext) else {
+            return nil
+        }
+        
+        let avPlayerItem = AVPlayerItem(url: videoURL)
+        if avPlayer==nil{
+            avPlayer = AVPlayer(playerItem: avPlayerItem)
+            avPlayer.play()
+            
+            // replay
+            NotificationCenter.default.addObserver(
+                forName: .AVPlayerItemDidPlayToEndTime,
+                object: nil,
+                queue: nil) { notification in
+                    self.avPlayer.seek(to: .zero)
+                    self.avPlayer.play()
+                }
+        }else{
+            avPlayer = AVPlayer(playerItem: avPlayerItem)
+            avPlayer.play()
+        }
+        
+        
+        return avPlayer
+    }
+    
+    func createBox()->SCNNode?{
+        let boxNode:SCNNode? = SCNNode()
+        
+        let box = SCNBox(width: CGFloat(0.1), height: CGFloat(0.1), length: CGFloat(0.1), chamferRadius: 0.01)
+        box.firstMaterial?.diffuse.contents = UIColor(white: 1.0, alpha: 0.8)
+        box.firstMaterial?.isDoubleSided = true
+        
+        boxNode!.geometry = box // make this node a box!
+        boxNode!.position = SCNVector3Make(0.0, 0.0, 0.0)// tweak position over anchor
+        
+        return boxNode
+    }
+}
+
+//MARK: Utility Extension
+extension ViewController{
     // code from fast style transfer example in iOS app
     // https://github.com/prisma-ai/torch2coreml/tree/master/example/fast-neural-style/ios
     private func stylizeImage(cgImage: CGImage, model: MLModel) -> CGImage {
@@ -332,75 +408,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         return pixelBuffer!
     }
     
-    func createTextNode(textString: String)->SCNNode?{
-        
-        let textNode:SCNNode? = SCNNode()
-        textNode!.geometry = setupTextParameters(textString: textString) // make this node text
-        textNode!.scale = SCNVector3Make(0.001, 0.001, 0.001)
-        textNode!.position = SCNVector3Make(-0.1, 0.1, 0.0)// tweak position over anchor
-        textNode!.eulerAngles.y = 0
-        textNode?.castsShadow = true
-        
-        
-        return textNode
+    func random(_ n:Int) -> Int
+    {
+        return Int(arc4random_uniform(UInt32(n)))
     }
-    
-    func setupTextParameters(textString: String)->SCNText{
-        let text = SCNText(string: textString, extrusionDepth: 1)
-        
-        let material = SCNMaterial()
-        material.diffuse.contents = UIColor.white
-        
-        text.flatness = 0
-        text.isWrapped = true
-        text.materials = [material]
-        return text
-    }
-    
-    var avPlayer:AVPlayer! = nil
-    func getLoopingAVPlayerFromFile(file:String, ext:String)->AVPlayer?{
-        // https://www.raywenderlich.com/6957-building-a-museum-app-with-arkit-2
-        guard let videoURL = Bundle.main.url(forResource: file,
-                                             withExtension: ext) else {
-            return nil
-        }
-        
-        let avPlayerItem = AVPlayerItem(url: videoURL)
-        if avPlayer==nil{
-            avPlayer = AVPlayer(playerItem: avPlayerItem)
-            avPlayer.play()
-            
-            // replay
-            NotificationCenter.default.addObserver(
-                forName: .AVPlayerItemDidPlayToEndTime,
-                object: nil,
-                queue: nil) { notification in
-                    self.avPlayer.seek(to: .zero)
-                    self.avPlayer.play()
-                }
-        }else{
-            avPlayer = AVPlayer(playerItem: avPlayerItem)
-            avPlayer.play()
-        }
-        
-        
-        return avPlayer
-    }
-    
-    func createBox()->SCNNode?{
-        let boxNode:SCNNode? = SCNNode()
-        
-        let box = SCNBox(width: CGFloat(0.1), height: CGFloat(0.1), length: CGFloat(0.1), chamferRadius: 0.01)
-        box.firstMaterial?.diffuse.contents = UIColor(white: 1.0, alpha: 0.8)
-        box.firstMaterial?.isDoubleSided = true
-        
-        boxNode!.geometry = box // make this node a box!
-        boxNode!.position = SCNVector3Make(0.0, 0.0, 0.0)// tweak position over anchor
-        
-        return boxNode
-    }
-    
 }
-
-
-
