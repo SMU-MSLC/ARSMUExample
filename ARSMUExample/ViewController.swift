@@ -53,6 +53,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
     var models:[MLModel] = []
     
+    //MARK: View Lifecycle Functions
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -78,22 +79,26 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
     }
     
-    @IBAction func userDidRotate(_ sender: UIRotationGestureRecognizer) {
-        if let node = lastNode{
-            let action = SCNAction.rotateTo(x: 0,
-                                            y: 0,
-                                            z: sender.rotation,
-                                            duration: 0.1)
-            
-            node.runAction(action)
-        }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // Create a session configuration
+        let configuration = ARWorldTrackingConfiguration()
+
+        // Run the view's session
+        sceneView.session.run(configuration)
     }
     
-    func random(_ n:Int) -> Int
-    {
-        return Int(arc4random_uniform(UInt32(n)))
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        // Pause the view's session
+        sceneView.session.pause()
     }
     
+    //MARK: User Interactions
+    
+    // On a tap, add the stylized image
     @IBAction func handleTap(_ sender: UITapGestureRecognizer) {
         
         // grab the current AR session frame from the scene, if possible
@@ -105,9 +110,9 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         let imagePlane = SCNPlane(width:sceneView.bounds.width/6000,
                                   height:sceneView.bounds.height/6000)
         
-        // take a snapshot of the current image shown to user
-        // TODO: spawn this on a separate queue
-        //       and then come back to main queue for adding node
+        // take a snapshot of the current image shown to user, then stylize
+        // Spawn this operation on a separate background queue
+        //   and then come back to main queue for adding node
         let idx = random(models.count) // choose random style
         print(idx)
         let startImage = sceneView.snapshot()
@@ -140,6 +145,20 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
     }
     
+    // Rotate the last placed node based in gesture
+    @IBAction func userDidRotate(_ sender: UIRotationGestureRecognizer) {
+        if let node = lastNode{
+            let action = SCNAction.rotateTo(x: 0,
+                                            y: 0,
+                                            z: sender.rotation,
+                                            duration: 0.1)
+            
+            node.runAction(action)
+        }
+    }
+    
+    
+    // Use swipt to move the last node on and off screen (fly on/off)
     @IBAction func didSwipe(_ sender: UISwipeGestureRecognizer) {
         
         
@@ -167,52 +186,13 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         }
         
     }
+       
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        // Create a session configuration
-        let configuration = ARWorldTrackingConfiguration()
+    
+}
 
-        // Run the view's session
-        sceneView.session.run(configuration)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        // Pause the view's session
-        sceneView.session.pause()
-    }
-    
-
-    // MARK: - ARSCNViewDelegate
-    
-/*
-    // Override to create and configure nodes for anchors added to the view's session.
-    func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
-        let node = SCNNode()
-     
-        return node
-    }
-*/
-    
-    func session(_ session: ARSession, didFailWithError error: Error) {
-        // Present an error message to the user
-        
-    }
-    
-    func sessionWasInterrupted(_ session: ARSession) {
-        // Inform the user that the session has been interrupted, for example, by presenting an overlay
-        
-    }
-    
-    func sessionInterruptionEnded(_ session: ARSession) {
-        // Reset tracking and/or remove existing anchors if consistent tracking is required
-        
-    }
-    
-    
+//MARK: Utility Extension
+extension ViewController{
     // code from fast style transfer example in iOS app
     // https://github.com/prisma-ai/torch2coreml/tree/master/example/fast-neural-style/ios
     private func stylizeImage(cgImage: CGImage, model: MLModel) -> CGImage {
@@ -256,7 +236,38 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         return pixelBuffer!
     }
+    
+    func random(_ n:Int) -> Int
+    {
+        return Int(arc4random_uniform(UInt32(n)))
+    }
 }
 
-
-
+// MARK: - ARSCNViewDelegate Extension
+extension ViewController{
+    
+    
+/*
+    // Override to create and configure nodes for anchors added to the view's session.
+    func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
+        let node = SCNNode()
+     
+        return node
+    }
+*/
+    
+    func session(_ session: ARSession, didFailWithError error: Error) {
+        // Present an error message to the user
+        
+    }
+    
+    func sessionWasInterrupted(_ session: ARSession) {
+        // Inform the user that the session has been interrupted, for example, by presenting an overlay
+        
+    }
+    
+    func sessionInterruptionEnded(_ session: ARSession) {
+        // Reset tracking and/or remove existing anchors if consistent tracking is required
+        
+    }
+}
